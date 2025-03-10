@@ -45,10 +45,9 @@ if menu == "Beranda":
 
 # Tampilan Indeks UV (Gauge Chart)
 elif menu == "Indeks UV":
-    if data is not None and not data.empty:
         last_index = data['Index'].iloc[-1]
-        last_time =  data['Time'].iloc[-1]
-        st.write("last_time")
+        ast_time = data['Waktu'].iloc[-1].time()
+        st.write(last_time)
         
         fig = go.Figure(go.Indicator(
             mode="gauge+number",
