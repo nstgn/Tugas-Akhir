@@ -94,3 +94,17 @@ st.markdown(
 )
 
 st.write("Data dari Google Sheets:", data)
+
+# Sidebar untuk menu
+menu = st.sidebar.selectbox("Pilih Menu", ["Beranda", "Data UV", "Grafik"])
+
+st.title("Sistem Pemantauan UV")
+
+if menu == "Beranda":
+    st.write("Selamat datang di sistem pemantauan radiasi UV!")
+elif menu == "Data UV":
+    st.write("Data dari Google Sheets:")
+    st.dataframe(data)
+elif menu == "Grafik":
+    st.write("Visualisasi Data Indeks UV")
+    st.line_chart(data.set_index("Waktu"))
