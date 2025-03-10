@@ -124,7 +124,7 @@ last_index = data["Index"].iloc[-1]
 
 fig = go.Figure(go.Indicator(
     mode="gauge+number",
-    value=1,
+    value=0,
     gauge={
         'axis': {'range': [0, 11]},
         'bar': {'color': "#3098ff"},
