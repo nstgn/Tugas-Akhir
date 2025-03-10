@@ -46,13 +46,12 @@ if menu == "Beranda":
 # Tampilan Indeks UV (Gauge Chart)
 elif menu == "Indeks UV":
     if data is not None and not data.empty:
-        latest_data = data.iloc[-1]  # Ambil data terbaru
-        latest_time = latest_data["Waktu"]
-        uv_index = latest_data["Index"]
+        last_index = data['Index'].iloc[-1]
+        last_time = data.index[-1]
 
         fig = go.Figure(go.Indicator(
             mode="gauge+number",
-            value=uv_index,
+            value=last_index,
             gauge={
                 'axis': {'range': [0, 11]},
                 'bar': {'color': "#3098ff"},
@@ -73,11 +72,11 @@ elif menu == "Indeks UV":
             f"""
             <div style="text-align: center;">
                 <span style="display: inline-block; padding: 5px 15px; border-radius: 5px;
-                            background-color: {'#d4edda' if uv_index <= 2 else '#fcfac0' if uv_index <= 5 else '#ffc78f' if uv_index <= 7 else '#ff8a8a' if uv_index <= 10 else '#e7cafc'};">
-                    {"✅ Tingkat aman: Gunakan sunscreen SPF 30+." if uv_index <= 2 else
-                     "⚠️ Bahaya sedang: Oleskan sunscreen setiap 2 jam." if uv_index <= 5 else
-                     "⚠️ Bahaya tinggi: Hindari paparan langsung saat siang." if uv_index <= 7 else
-                     "⚠️ Bahaya sangat tinggi: Gunakan pakaian pelindung & topi." if uv_index <= 10 else
+                            background-color: {'#d4edda' if last_index <= 2 else '#fcfac0' if last_index <= 5 else '#ffc78f' if last_index <= 7 else '#ff8a8a' if last_index <= 10 else '#e7cafc'};">
+                    {"✅ Tingkat aman: Gunakan sunscreen SPF 30+." if last_index <= 2 else
+                     "⚠️ Bahaya sedang: Oleskan sunscreen setiap 2 jam." if last_index <= 5 else
+                     "⚠️ Bahaya tinggi: Hindari paparan langsung saat siang." if last_index <= 7 else
+                     "⚠️ Bahaya sangat tinggi: Gunakan pakaian pelindung & topi." if last_index <= 10 else
                      "❗ Bahaya ekstrem: Kurangi aktivitas luar ruangan!"}
                </span>
             </div>
@@ -88,7 +87,7 @@ elif menu == "Indeks UV":
         st.markdown(
             f"""
             <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
-                <p><b>Pukul:</b> {latest_time.strftime('%H:%M')}</p>
+                <p><b>Pukul:</b> {last_time.strftime('%H:%M')}</p>
             </div>
             """,
             unsafe_allow_html=True,
