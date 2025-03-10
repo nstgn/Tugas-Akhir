@@ -126,7 +126,7 @@ uv_index = latest_data['Index']
 
 fig = go.Figure(go.Indicator(
     mode="gauge+number",
-    value=uv_index,
+    value=last_index = data["Index"].iloc[-1],
     gauge={
         'axis': {'range': [-0.5, 11.5]},
         'bar': {'color': "#3098ff"},
