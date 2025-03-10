@@ -120,18 +120,12 @@ st.markdown(
 )
 
 # Membuat gauge chart
-return df.iloc[-1, 0], df.index[-1]  # Ambil nilai terakhir dan waktu terakhir setelah interpolasi
-
 def create_gauge(value, timestamp):
     fig = go.Figure()
-    
-    # Warna untuk tiap rentang UV Index
-    colors = ["#00FF00", "#FFFF00", "#FF7F00", "#FF0000", "#800080"]
-    labels = ["Low", "Moderate", "High", "Very High", "Extreme"]
-    
+
     # Tambahkan warna pada gauge
     fig.add_trace(go.Indicator(
-        mode="gauge+number+delta",
+        mode="gauge+number",
         value=value,
         title={"text": f"UV Index\n{timestamp.strftime('%Y-%m-%d %H:%M')}"},
         domain={'x': [0, 1], 'y': [0, 1]},
@@ -147,8 +141,14 @@ def create_gauge(value, timestamp):
             ],
         }
     ))
-    
+
     return fig
+
+latest_value = future_df.iloc[0, 1]
+latest_time = future_df.iloc[0, 0]
+gauge_fig = create_gauge(latest_value, latest_time)
+st.plotly_chart(gauge_fig)
+
 st.plotly_chart(fig, use_container_width=True)
 st.markdown(
     f"""
