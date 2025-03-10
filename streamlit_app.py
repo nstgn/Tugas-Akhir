@@ -120,34 +120,29 @@ st.markdown(
 )
 
 # Membuat gauge chart
-def create_gauge(value, timestamp):
-    fig = go.Figure()
+latest_data = data.iloc[-1] 
+latest_time = latest_data.name 
+uv_index = latest_data['Index'] 
 
-    # Tambahkan warna pada gauge
-    fig.add_trace(go.Indicator(
-        mode="gauge+number",
-        value=value,
-        title={"text": f"UV Index\n{timestamp.strftime('%Y-%m-%d %H:%M')}"},
-        domain={'x': [0, 1], 'y': [0, 1]},
-        gauge={
-            'axis': {'range': [0, 11]},
-            'bar': {'color': "#3098ff"},
-            'steps': [
-                {'range': [0, 3], 'color': "#00FF00"},
-                {'range': [3, 6], 'color': "#FFFF00"},
-                {'range': [6, 8], 'color': "#FF7F00"},
-                {'range': [8, 10], 'color': "#FF0000"},
-                {'range': [10, 11], 'color': "#800080"},
-            ],
-        }
-    ))
+fig = go.Figure(go.Indicator(
+    mode="gauge+number",
+    value=uv_index,
+    gauge={
+        'axis': {'range': [0, 11]},
+        'bar': {'color': "#3098ff"},
+        'steps': [
+            {'range': [0, 3], 'color': "#00ff00"},
+            {'range': [3, 6], 'color': "#ffff00"},
+            {'range': [6, 8], 'color': "#ff6600"},
+            {'range': [8, 10], 'color': "#ff0000"},
+            {'range': [10,11], 'color': "#9900cc"},
+        ]
+    }
+))
 
-    return fig
-
-latest_value = future_df.iloc[0, 1]
-latest_time = future_df.iloc[0, 0]
-gauge_fig = create_gauge(latest_value, latest_time)
-st.plotly_chart(gauge_fig)
+fig.update_layout(
+    margin=dict(t=30, b=30, l=30, r=30),
+)
 
 st.plotly_chart(fig, use_container_width=True)
 st.markdown(
