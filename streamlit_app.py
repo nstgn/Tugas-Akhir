@@ -119,10 +119,10 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+data["Index"] = pd.to_numeric(data["Index"], errors='coerce')
 last_index = data["Index"].iloc[-1]
 st.write(f"**Last Index:** {last_index}")
-last_time = data["Time"].iloc[-1]
-st.write(f"**Last Time:** {last_time}")
+
 
 # Membuat gauge chart
 latest_data = data.iloc[-1] 
