@@ -43,13 +43,6 @@ if menu == "Beranda":
     st.markdown("<h1 style='text-align: center; color: purple;'>🌞 Sistem Pemantauan Radiasi UV</h1>", unsafe_allow_html=True)
     st.write("Selamat datang di sistem pemantauan radiasi UV! Pantau indeks UV secara real-time dan analisis historisnya.")
 
-st.markdown(
-    """
-    <h1 style="text-align: center;">UV Index</h1>
-    """,
-    unsafe_allow_html=True,
-)
-
 # Tampilan gauge chart
 elif menu == "Indeks UV":
 latest_data = data.iloc[-1] 
