@@ -45,9 +45,9 @@ if menu == "Beranda":
 
 # Tampilan gauge chart
 elif menu == "Indeks UV":
-latest_data = data.iloc[-1] 
-latest_time = latest_data.name 
-uv_index = latest_data['Index'] 
+#latest_data = data.iloc[-1] 
+latest_time = 15.00
+uv_index = 3
 
 fig = go.Figure(go.Indicator(
     mode="gauge+number",
