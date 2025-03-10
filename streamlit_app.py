@@ -124,26 +124,35 @@ latest_data = data.iloc[-1]
 latest_time = latest_data.name 
 uv_index = latest_data['Index'] 
 
-fig = go.Figure(go.Indicator(
-    mode="gauge+number",
-    value=uv_index,
-    gauge={
-        'axis': {'range': [0, 11]},
-        'bar': {'color': "#3098ff"},
-        'steps': [
-            {'range': [0, 3], 'color': "#00ff00"},
-            {'range': [3, 6], 'color': "#ffff00"},
-            {'range': [6, 8], 'color': "#ff6600"},
-            {'range': [8, 10], 'color': "#ff0000"},
-            {'range': [10,11], 'color': "#9900cc"},
-        ]
-    }
-))
+    return df.iloc[-1, 0], df.index[-1]  # Ambil nilai terakhir dan waktu terakhir setelah interpolasi
 
-fig.update_layout(
-    margin=dict(t=30, b=30, l=30, r=30),
-)
-
+def create_gauge(value, timestamp):
+    fig = go.Figure()
+    
+    # Warna untuk tiap rentang UV Index
+    colors = ["#00FF00", "#FFFF00", "#FF7F00", "#FF0000", "#800080"]
+    labels = ["Low", "Moderate", "High", "Very High", "Extreme"]
+    
+    # Tambahkan warna pada gauge
+    fig.add_trace(go.Indicator(
+        mode="gauge+number+delta",
+        value=value,
+        title={"text": f"UV Index\n{timestamp.strftime('%Y-%m-%d %H:%M')}"},
+        domain={'x': [0, 1], 'y': [0, 1]},
+        gauge={
+            'axis': {'range': [0, 11]},
+            'bar': {'color': "#3098ff"},
+            'steps': [
+                {'range': [0, 3], 'color': "#00FF00"},
+                {'range': [3, 6], 'color': "#FFFF00"},
+                {'range': [6, 8], 'color': "#FF7F00"},
+                {'range': [8, 10], 'color': "#FF0000"},
+                {'range': [10, 11], 'color': "#800080"},
+            ],
+        }
+    ))
+    
+    return fig
 st.plotly_chart(fig, use_container_width=True)
 st.markdown(
     f"""
