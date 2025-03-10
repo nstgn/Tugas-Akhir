@@ -47,7 +47,7 @@ if menu == "Beranda":
 elif menu == "Indeks UV":
     if data is not None and not data.empty:
         last_index = data['Index'].iloc[-1]
-        last_time = data.index[-1]
+        last_time =  data['Time'].iloc[-1]
 
         fig = go.Figure(go.Indicator(
             mode="gauge+number",
@@ -87,7 +87,7 @@ elif menu == "Indeks UV":
         st.markdown(
             f"""
             <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
-                <p><b>Pukul:</b> {last_time('%H:%M')}</p>
+                <p><b>Pukul:</b> {last_time.strftime('%H:%M')}</p>
             </div>
             """,
             unsafe_allow_html=True,
