@@ -120,7 +120,7 @@ st.markdown(
 )
 
 # Membuat gauge chart
-    return df.iloc[-1, 0], df.index[-1]  # Ambil nilai terakhir dan waktu terakhir setelah interpolasi
+return df.iloc[-1, 0], df.index[-1]  # Ambil nilai terakhir dan waktu terakhir setelah interpolasi
 
 def create_gauge(value, timestamp):
     fig = go.Figure()
