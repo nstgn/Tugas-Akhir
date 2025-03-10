@@ -15,27 +15,93 @@ if data is not None and not data.empty:
     data["Waktu"] = pd.to_datetime(data["Date"] + " " + data["Time"])
     data = data.sort_values(by="Waktu")
 
-# Sidebar Menu
-menu = st.sidebar.selectbox("Menu", ["Beranda", "Data UV", "Grafik"])
+#14 Tampilan
+# Custom Header
+st.markdown(
+    """
+    <style>
+    .header {
+        background-color: #D6D6F5; padding: 10px; text-align: center; border-radius: 7px;
+    }
+    .header img {
+        width: 60px;
+    }
+    </style>
+    <div class="header">
+        <img src="https://upload.wikimedia.org/wikipedia/id/2/2d/Undip.png" alt="Logo">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
+st.markdown(
+    """
+    <h1 style="text-align: center;">UV Index</h1>
+    """,
+    unsafe_allow_html=True,
+)
+
+# Navigasi Sidebar
+st.sidebar.title("Navigasi")
+menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Data UV", "Grafik"])
+
+# Tampilan Beranda
 if menu == "Beranda":
-    st.title("Sistem Pemantauan Radiasi UV")
-    st.write("Selamat datang di sistem pemantauan radiasi UV berbasis IoT dan AI.")
-    st.image("https://source.unsplash.com/800x400/?sunlight")
+    st.markdown("<h1 style='text-align: center; color: purple;'>🌞 Sistem Pemantauan Radiasi UV</h1>", unsafe_allow_html=True)
+    st.write("Selamat datang di sistem pemantauan radiasi UV! Pantau indeks UV secara real-time dan analisis historisnya.")
 
+# Tampilan Data UV
 elif menu == "Data UV":
-    st.title("Data Historis Indeks UV")
-    st.dataframe(data[["Waktu", "Intensity", "Index"]])
+    st.subheader("📊 Data Historis Indeks UV")
+    
+    # Pewarnaan DataFrame untuk Indeks UV
+    def highlight_uv(val):
+        if val < 3:
+            color = "green"
+        elif val < 6:
+            color = "yellow"
+        elif val < 8:
+            color = "orange"
+        else:
+            color = "red"
+        return f"background-color: {color}; color: white;"
 
+    styled_data = data.style.applymap(highlight_uv, subset=["Indeks UV"])
+    st.dataframe(styled_data)
+
+# Tampilan Grafik
 elif menu == "Grafik":
-    st.title("Visualisasi Data Indeks UV")
-    
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=data["Waktu"], y=data["Index"], mode='lines', name='Indeks UV', line=dict(color='orange')))
-    
-    fig.update_layout(title="Grafik Indeks UV dari Data Historis",
-                      xaxis_title="Waktu",
-                      yaxis_title="Indeks UV",
-                      template="plotly_dark")
-    
-    st.plotly_chart(fig)
+    st.subheader("📈 Visualisasi Data Indeks UV")
+
+    fig, ax = plt.subplots(figsize=(8, 4))
+    ax.plot(data["Waktu"], data["Indeks UV"], marker="o", linestyle="-", color="purple", label="Indeks UV")
+    ax.fill_between(data["Waktu"], data["Indeks UV"], color="purple", alpha=0.3)
+    ax.set_xlabel("Waktu")
+    ax.set_ylabel("Indeks UV")
+    ax.set_title("Grafik Indeks UV Seiring Waktu")
+    ax.legend()
+    ax.grid(True)
+
+    st.pyplot(fig)
+
+# Custom Footer
+st.markdown(
+    """
+    <style>
+    .footer {
+        position: fixed;
+        bottom: 0;
+        right: 70px;
+        font-size: 12px;
+        text-align: left;
+        margin: 0;
+        padding: 5px 10px;
+    }
+    </style>
+    <div class="footer">
+        <p>Universitas Diponegoro<br>Fakultas Sains dan Matematika<br>Departemen Fisika</p>
+        <p>Nastangini<br>20440102130112</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
