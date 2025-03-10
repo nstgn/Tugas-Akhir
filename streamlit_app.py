@@ -87,7 +87,7 @@ elif menu == "Indeks UV":
         st.markdown(
             f"""
             <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
-                <p><b>Pukul:</b> {last_time.strftime('%H:%M')}</p>
+                <p><b>Pukul:</b> {last_time('%H:%M')}</p>
             </div>
             """,
             unsafe_allow_html=True,
