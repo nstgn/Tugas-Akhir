@@ -48,7 +48,8 @@ elif menu == "Indeks UV":
     if data is not None and not data.empty:
         last_index = data['Index'].iloc[-1]
         last_time =  data['Time'].iloc[-1]
-st.write(last_time)
+        st.write("last_time")
+        
         fig = go.Figure(go.Indicator(
             mode="gauge+number",
             value=last_index,
