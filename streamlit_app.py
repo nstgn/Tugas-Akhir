@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import streamlit as st
+import matplotlib.pyplot as plt
 from streamlit_gsheets import GSheetsConnection
 import plotly.graph_objects as go
 
@@ -15,7 +16,6 @@ if data is not None and not data.empty:
     data["Waktu"] = pd.to_datetime(data["Date"] + " " + data["Time"])
     data = data.sort_values(by="Waktu")
 
-#14 Tampilan
 # Custom Header
 st.markdown(
     """
@@ -43,77 +43,82 @@ if menu == "Beranda":
     st.markdown("<h1 style='text-align: center; color: purple;'>🌞 Sistem Pemantauan Radiasi UV</h1>", unsafe_allow_html=True)
     st.write("Selamat datang di sistem pemantauan radiasi UV! Pantau indeks UV secara real-time dan analisis historisnya.")
 
-# Tampilan gauge chart
+# Tampilan Indeks UV (Gauge Chart)
 elif menu == "Indeks UV":
-#latest_data = data.iloc[-1] 
-latest_time = 15.00
-uv_index = 3
+    if data is not None and not data.empty:
+        latest_data = data.iloc[-1]  # Ambil data terbaru
+        latest_time = latest_data["Waktu"]
+        uv_index = latest_data["Index"]
 
-fig = go.Figure(go.Indicator(
-    mode="gauge+number",
-    value=uv_index,
-    gauge={
-        'axis': {'range': [0, 11]},
-        'bar': {'color': "#3098ff"},
-        'steps': [
-            {'range': [0, 3], 'color': "#00ff00"},
-            {'range': [3, 6], 'color': "#ffff00"},
-            {'range': [6, 8], 'color': "#ff6600"},
-            {'range': [8, 10], 'color': "#ff0000"},
-            {'range': [10,11], 'color': "#9900cc"},
-        ]
-    }
-))
+        fig = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=uv_index,
+            gauge={
+                'axis': {'range': [0, 11]},
+                'bar': {'color': "#3098ff"},
+                'steps': [
+                    {'range': [0, 3], 'color': "#00ff00"},
+                    {'range': [3, 6], 'color': "#ffff00"},
+                    {'range': [6, 8], 'color': "#ff6600"},
+                    {'range': [8, 10], 'color': "#ff0000"},
+                    {'range': [10, 11], 'color': "#9900cc"},
+                ]
+            }
+        ))
 
-fig.update_layout(
-    margin=dict(t=30, b=30, l=30, r=30),
-)
+        fig.update_layout(margin=dict(t=30, b=30, l=30, r=30))
+        st.plotly_chart(fig, use_container_width=True)
 
-st.plotly_chart(fig, use_container_width=True)
-st.markdown(
-    f"""
-    <div style="text-align: center;">
-        <span style="display: inline-block; padding: 5px 15px; border-radius: 5px;
-                    background-color: {'#d4edda' if uv_index <= 2 else '#fcfac0' if uv_index <= 5 else '#ffc78f' if uv_index <= 7 else '#ff8a8a' if uv_index <= 10 else '#e7cafc'};">
-            {"<p style='color: #00ff00;'><strong>✅ Tingkat aman:</strong> Gunakan pelembab tabir surya SPF 30+ dan kacamata hitam.</p>" if uv_index <= 2 else
-             "<p style='color: #ffcc00;'><strong>⚠️ Tingkat bahaya sedang:</strong> Oleskan cairan pelembab tabir surya SPF 30+ setiap 2 jam, kenakan pakaian pelindung matahari.</p>" if uv_index <= 5 else
-             "<p style='color: #ff6600;'><strong>⚠️ Tingkat bahaya tinggi:</strong> Kurangi paparan matahari antara pukul 10 pagi hingga pukul 4 sore.</p>" if uv_index <= 7 else
-             "<p style='color: #ff0000;'><strong>⚠️ Tingkat bahaya sangat tinggi:</strong> Tetap di tempat teduh dan oleskan sunscreen setiap 2 jam.</p>" if uv_index <= 10 else
-             "<p style='color: #9900cc;'><strong>❗ Tingkat bahaya ekstrem:</strong> Diperlukan semua tindakan pencegahan karena kulit dan mata dapat rusak dalam hitungan menit.</p>"}
-       </span>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+        st.markdown(
+            f"""
+            <div style="text-align: center;">
+                <span style="display: inline-block; padding: 5px 15px; border-radius: 5px;
+                            background-color: {'#d4edda' if uv_index <= 2 else '#fcfac0' if uv_index <= 5 else '#ffc78f' if uv_index <= 7 else '#ff8a8a' if uv_index <= 10 else '#e7cafc'};">
+                    {"✅ Tingkat aman: Gunakan sunscreen SPF 30+." if uv_index <= 2 else
+                     "⚠️ Bahaya sedang: Oleskan sunscreen setiap 2 jam." if uv_index <= 5 else
+                     "⚠️ Bahaya tinggi: Hindari paparan langsung saat siang." if uv_index <= 7 else
+                     "⚠️ Bahaya sangat tinggi: Gunakan pakaian pelindung & topi." if uv_index <= 10 else
+                     "❗ Bahaya ekstrem: Kurangi aktivitas luar ruangan!"}
+               </span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-st.markdown(
-    f"""
-    <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
-        <p><b>Pukul:</b> {latest_time.strftime('%H:%M')}</p>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+        st.markdown(
+            f"""
+            <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
+                <p><b>Pukul:</b> {latest_time.strftime('%H:%M')}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
 # Tampilan Data UV
 elif menu == "Data UV":
-    st.subheader("📊 Data Historis Indeks UV")
-    st.write("Data dari Google Sheets:", data)
+    if data is not None and not data.empty:
+        st.subheader("📊 Data Historis Indeks UV")
+        st.write("Data dari Google Sheets:", data)
+    else:
+        st.warning("Data tidak tersedia.")
 
-# Tampilan Grafik
+# Tampilan Grafik UV
 elif menu == "Grafik":
-    st.subheader("📈 Visualisasi Data Indeks UV")
+    if data is not None and not data.empty:
+        st.subheader("📈 Visualisasi Data Indeks UV")
 
-    fig, ax = plt.subplots(figsize=(8, 4))
-    ax.plot(data["Waktu"], data["Indeks UV"], marker="o", linestyle="-", color="purple", label="Indeks UV")
-    ax.fill_between(data["Waktu"], data["Indeks UV"], color="purple", alpha=0.3)
-    ax.set_xlabel("Waktu")
-    ax.set_ylabel("Indeks UV")
-    ax.set_title("Grafik Indeks UV Seiring Waktu")
-    ax.legend()
-    ax.grid(True)
+        fig, ax = plt.subplots(figsize=(8, 4))
+        ax.plot(data["Waktu"], data["Index"], marker="o", linestyle="-", color="purple", label="Indeks UV")
+        ax.fill_between(data["Waktu"], data["Index"], color="purple", alpha=0.3)
+        ax.set_xlabel("Waktu")
+        ax.set_ylabel("Indeks UV")
+        ax.set_title("Grafik Indeks UV Seiring Waktu")
+        ax.legend()
+        ax.grid(True)
 
-    st.pyplot(fig)
+        st.pyplot(fig)
+    else:
+        st.warning("Data tidak tersedia untuk ditampilkan.")
 
 # Custom Footer
 st.markdown(
