@@ -36,7 +36,7 @@ st.markdown(
 
 # Navigasi Sidebar
 st.sidebar.title("Navigasi")
-menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Indeks UV", "Data UV", "Grafik"])
+menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Indeks UV", "Data Historis"])
 
 # Tampilan Beranda
 if menu == "Beranda":
@@ -93,31 +93,33 @@ elif menu == "Indeks UV":
             unsafe_allow_html=True,
         )
 
-# Tampilan Data UV
-elif menu == "Data UV":
+elif menu == "Data Historis":
     if data is not None and not data.empty:
         st.subheader("📊 Data Historis Indeks UV")
-        st.write("Data dari Google Sheets:", data)
+
+        # Membuat dua kolom: kiri (tabel) & kanan (grafik)
+        col1, col2 = st.columns([1, 2])  # Kolom kiri lebih kecil dari kanan
+
+        with col1:
+            st.write("📋 **Tabel Data**")
+            st.dataframe(data.tail(20), height=400)  # Menampilkan 20 data terbaru
+
+        with col2:
+            st.write("📈 **Grafik Indeks UV**")
+            fig = px.line(
+                data, 
+                x=data.index, 
+                y="Index", 
+                markers=True, 
+                title="Grafik Indeks UV Seiring Waktu",
+                labels={"Index": "Indeks UV", "index": "Waktu"}
+            )
+            fig.update_traces(line=dict(color="purple"), fill="tozeroy")  # Warna & area fill
+            fig.update_layout(xaxis=dict(rangeslider=dict(visible=True)))  # Scroll horizontal
+
+            st.plotly_chart(fig, use_container_width=True)  # Grafik responsif
     else:
         st.warning("Data tidak tersedia.")
-
-# Tampilan Grafik UV
-elif menu == "Grafik":
-    if data is not None and not data.empty:
-        st.subheader("📈 Visualisasi Data Indeks UV")
-
-        fig, ax = plt.subplots(figsize=(8, 4))
-        ax.plot(data["Waktu"], data["Index"], marker="o", linestyle="-", color="purple", label="Indeks UV")
-        ax.fill_between(data["Waktu"], data["Index"], color="purple", alpha=0.3)
-        ax.set_xlabel("Waktu")
-        ax.set_ylabel("Indeks UV")
-        ax.set_title("Grafik Indeks UV Seiring Waktu")
-        ax.legend()
-        ax.grid(True)
-
-        st.pyplot(fig)
-    else:
-        st.warning("Data tidak tersedia untuk ditampilkan.")
 
 # Custom Footer
 st.markdown(
