@@ -120,10 +120,6 @@ st.markdown(
 )
 
 # Membuat gauge chart
-latest_data = data.iloc[-1] 
-latest_time = latest_data.name 
-uv_index = latest_data['Index'] 
-
     return df.iloc[-1, 0], df.index[-1]  # Ambil nilai terakhir dan waktu terakhir setelah interpolasi
 
 def create_gauge(value, timestamp):
