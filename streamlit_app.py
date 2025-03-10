@@ -11,13 +11,42 @@ from tensorflow.keras.layers import LSTM, Dense, Dropout
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 from streamlit_gsheets import GSheetsConnection
 
-
 #2 Input Data
 url = "https://docs.google.com/spreadsheets/d/1W9WYq245Q7g4VYn0BWt7x5DcMnhba3-rugeMu2TPM60/edit?gid=0#gid=0"
 conn = st.connection("gsheets", type=GSheetsConnection)
 data =  conn.read(spreadsheet=url, usecols=[0, 1, 2, 3])
 
-st.write("Data dari Google Sheets:", data)
+#3 Pre-Processing Data
+data['Datetime'] = pd.to_datetime(data['Date'] + ' ' + data['Time'])
+data.set_index('Datetime', inplace=True)
+data = data[['Index']].copy()
+date_range = pd.date_range(start=data.index.min(), end=data.index.max(), freq='2T')
+date_range = date_range[(date_range.hour >= 6) & (date_range.hour <= 18)]
+data = data.reindex(date_range)
+data['Index'].interpolate(method='linear', inplace=True)
+
+
+
+# Custom Header
+st.markdown(
+    """
+    <style>
+    .header { background-color: #D6D6F5; padding: 10px; text-align: center; border-radius: 7px;}
+    .header img { width: 60px;  }
+    </style>
+    <div class="header">
+        <img src="https://upload.wikimedia.org/wikipedia/id/2/2d/Undip.png" alt="Logo">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+st.markdown(
+    """
+    <h1 style="text-align: center;">UV Index</h1>
+    """,
+    unsafe_allow_html=True,
+)
 
 # Membuat gauge chart
 latest_data = data.iloc[-1] 
@@ -69,3 +98,5 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
+st.write("Data dari Google Sheets:", data)
