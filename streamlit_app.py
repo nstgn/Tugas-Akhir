@@ -12,7 +12,7 @@ from streamlit_gsheets import GSheetsConnection
 import plotly.graph_objects as go
 
 #2 Input Data
-url = "https://docs.google.com/spreadsheets/d/1SczaIV1JHUSca1hPilByJFFzOi5a8Hkhi0OemlmPQsY/edit?usp=sharing"
+url = "https://docs.google.com/spreadsheets/d/1W9WYq245Q7g4VYn0BWt7x5DcMnhba3-rugeMu2TPM60/edit?gid=0#gid=0"
 conn = st.connection("gsheets", type=GSheetsConnection)
 data = conn.read(spreadsheet=url, usecols=[0, 1, 2, 3], ttl=0)
 
@@ -148,7 +148,7 @@ st.markdown(
     f"""
     <div style="text-align: center;">
         <span style="display: inline-block; padding: 5px 15px; border-radius: 5px;
-                    background-color: {'#d4edda' if uv_index <= 2 else '#fcfac0' if last_index <= 5 else '#ffc78f' if last_index<= 7 else '#ff8a8a' if last_index <= 10 else '#e7cafc'};">
+                    background-color: {'#d4edda' if last_index <= 2 else '#fcfac0' if last_index <= 5 else '#ffc78f' if last_index<= 7 else '#ff8a8a' if last_index <= 10 else '#e7cafc'};">
             {"<p style='color: #00ff00;'><strong>✅ Tingkat aman:</strong> Gunakan pelembab tabir surya SPF 30+ dan kacamata hitam.</p>" if last_index<= 2 else
              "<p style='color: #ffcc00;'><strong>⚠️ Tingkat bahaya sedang:</strong> Oleskan cairan pelembab tabir surya SPF 30+ setiap 2 jam, kenakan pakaian pelindung matahari.</p>" if last_index <= 5 else
              "<p style='color: #ff6600;'><strong>⚠️ Tingkat bahaya tinggi:</strong> Kurangi paparan matahari antara pukul 10 pagi hingga pukul 4 sore.</p>" if last_index<= 7 else
