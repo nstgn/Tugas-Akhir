@@ -46,7 +46,7 @@ if menu == "Beranda":
 # Tampilan Indeks UV (Gauge Chart)
 elif menu == "Indeks UV":
         last_index = data['Index'].iloc[-1]
-        ast_time = data['Waktu'].iloc[-1].time()
+        last_time = data['Waktu'].iloc[-1].time()
         st.write(last_time)
         
         fig = go.Figure(go.Indicator(
