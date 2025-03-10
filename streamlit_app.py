@@ -7,21 +7,30 @@ from sklearn.model_selection import train_test_split
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
-import streamlit as st
-from streamlit_gsheets import GSheetsConnection
-import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+from google.colab import drive
+import gspread
+from google.auth import default
+from google.colab import auth
 
 #2 Input Data
-url = "https://docs.google.com/spreadsheets/d/1W9WYq245Q7g4VYn0BWt7x5DcMnhba3-rugeMu2TPM60/edit?gid=0#gid=0"
-conn = st.connection("gsheets", type=GSheetsConnection)
-data = conn.read(spreadsheet=url, usecols=[0, 1, 2, 3], ttl=0)
+auth.authenticate_user()
+creds, _ = default()
+gc = gspread.authorize(creds)
+
+sheet_url = "https://docs.google.com/spreadsheets/d/1W9WYq245Q7g4VYn0BWt7x5DcMnhba3-rugeMu2TPM60/edit?gid=0#gid=0"
+worksheet = gc.open_by_url(sheet_url).sheet1
+data = pd.DataFrame(worksheet.get_all_records())
+
 
 #3 Pre-Processing Data
 data['Datetime'] = pd.to_datetime(data['Date'] + ' ' + data['Time'])
 data.set_index('Datetime', inplace=True)
 data = data[['Index']].copy()
+
 date_range = pd.date_range(start=data.index.min(), end=data.index.max(), freq='2T')
 date_range = date_range[(date_range.hour >= 6) & (date_range.hour <= 18)]
+
 data = data.reindex(date_range)
 data['Index'].interpolate(method='linear', inplace=True)
 
@@ -36,6 +45,7 @@ def prepare_data(series, n_steps):
         X.append(series[i:i+n_steps])
         y.append(series[i+n_steps])
     return np.array(X), np.array(y)
+
 n_steps = 7
 X, y = prepare_data(data['Index_scaled'].values, n_steps)
 
@@ -47,6 +57,8 @@ y_train, y_test = y[:split], y[split:]
 # Reshape input [samples, time steps, features]
 X_train = X_train.reshape((X_train.shape[0], X_train.shape[1], 1))
 X_test = X_test.reshape((X_test.shape[0], X_test.shape[1], 1))
+
+
 
 #7 Bangun LSTM
 model = Sequential([
@@ -66,6 +78,7 @@ history=model.fit(X_train, y_train, epochs=100, batch_size=16, validation_data=(
 train_predicted = model.predict(X_train)
 test_predicted = model.predict(X_test)
 
+
 #11 Atur waktu prediksi
 last_time = data.index[-1]
 last_time = last_time.replace(second=0, microsecond=0)
@@ -79,7 +92,7 @@ time_interval = pd.Timedelta(minutes=30)
 
 #13 Prediksi ke depan
 future_steps = 10
-last_sequence = X_test[-1]  
+last_sequence = X_test[-1]
 future_predictions = []
 future_times = [last_time + i * time_interval for i in range(1, future_steps + 1)]
 for _ in range(future_steps):
@@ -122,7 +135,6 @@ st.markdown(
 data["Index"] = pd.to_numeric(data["Index"], errors='coerce')
 last_index = data["Index"].iloc[-1]
 st.write(f"**Last Index:** {last_index}")
-
 
 # Membuat gauge chart
 latest_data = data.iloc[-1] 
