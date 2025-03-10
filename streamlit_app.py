@@ -119,6 +119,9 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+last_index = float(data["Index"].iloc[-1])
+st.write(f"**Last Index:** {last_index}")
+
 # Membuat gauge chart
 latest_data = data.iloc[-1] 
 latest_time = latest_data.name 
