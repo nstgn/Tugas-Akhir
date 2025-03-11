@@ -45,6 +45,11 @@ def prepare_data(series, n_steps):
 n_steps = 7
 X, y = prepare_data(data['Index_scaled'].values, n_steps)
 
+#6 Split Data
+split = int(len(X) * 0.8)
+X_train, X_test = X[:split], X[split:]
+y_train, y_test = y[:split], y[split:]
+
 # Custom Header
 st.markdown(
     """
@@ -159,10 +164,6 @@ elif menu == "Indeks UV":
 
 elif menu == "Panduan Perlindungan":
     st.subheader("🛡️ Panduan Perlindungan")
-    st.markdown("""
-    <h1 style="text-align: center;margin-top: 40px; margin-bottom: 10px;">Tabel Saran Proteksi</h1>
-    """,unsafe_allow_html=True,)
-    
     st.markdown("""
     <table style="width:100%; border-collapse: collapse; text-align: center;">
         <tr>
