@@ -36,12 +36,12 @@ st.markdown(
 
 # Navigasi Sidebar
 st.sidebar.title("Navigasi")
-menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Indeks UV", "Tabel Proteksi", "Data Historis"])
+menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Indeks UV", "Panduan Perlindungan", "Data Historis"])
 
 # Tampilan Beranda
 if menu == "Beranda":
     st.markdown(""" 
-    <h1 style='text-align: center; color: #6a0dad;'>🌞 SISTEM PREDIKSI INDEKS UV</h1>
+    <h1 style='text-align: center; color: #6a0dad;'> SISTEM PREDIKSI INDEKS UV</h1>
     """, unsafe_allow_html=True)
     
     st.markdown("""
@@ -56,6 +56,7 @@ if menu == "Beranda":
     """, unsafe_allow_html=True)
 
 elif menu == "Indeks UV":
+    st.subheader("🌞 Kondisi UV Sekarang")
     last_index = data['Index'].iloc[-1]
     last_time = data['Waktu'].iloc[-1].time()
         
@@ -74,7 +75,6 @@ elif menu == "Indeks UV":
     ))
     fig.update_layout(
         margin=dict(t=30, b=30, l=30, r=30))
-        #height=250, width=400)
     
     st.plotly_chart(fig, use_container_width=True)
     st.markdown(f"""
@@ -95,8 +95,11 @@ elif menu == "Indeks UV":
     </div>
     """,unsafe_allow_html=True,)
 
+st.subheader("⏳ Prediksi Indeks UV")
 
-elif menu == "Tabel Proteksi":
+
+elif menu == "Panduan Perlindungan":
+    st.subheader("🛡️ Panduan Perlindungan")
     st.markdown("""
     <h1 style="text-align: center;margin-top: 40px; margin-bottom: 10px;">Tabel Saran Proteksi</h1>
     """,unsafe_allow_html=True,)
