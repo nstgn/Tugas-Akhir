@@ -13,12 +13,8 @@ data = conn.read(spreadsheet=url, usecols=[0, 1, 2, 3], ttl=0)
 # 2 Pre-Processing
 if data is not None and not data.empty:
     data.columns = ["Date", "Time", "Intensity", "Index"]
-
-    # Gabungkan tanggal dan waktu
     data["Waktu"] = pd.to_datetime(data["Date"] + " " + data["Time"])
     data = data.sort_values(by="Waktu")
-
-    # Set index ke waktu
     data.set_index("Waktu", inplace=True)
 
     # Ambil hanya kolom Index
