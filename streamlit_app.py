@@ -70,6 +70,12 @@ history=model.fit(X_train, y_train, epochs=10, batch_size=8, validation_data=(X_
 train_predicted = model.predict(X_train)
 test_predicted = model.predict(X_test)
 
+#11 Denormalisasi
+train_predicted_dnm = scaler.inverse_transform(train_predicted)
+test_predicted_dnm = scaler.inverse_transform(test_predicted)
+y_train_dnm = scaler.inverse_transform(y_train.reshape(-1, 1))
+y_test_dnm = scaler.inverse_transform(y_test.reshape(-1, 1))
+
 # Custom Header
 st.markdown(
     """
