@@ -20,7 +20,8 @@ if data is not None and not data.empty:
     # Ambil hanya kolom Index
     data = data[['Index']].copy()
 
-    # Ambil data antara jam 06:00 - 18:05
+    last_index = data['Index'].iloc[-1]
+    last_time = data.index[-1]
     data = data.between_time("06:00", "18:05")
 
     # Buat rentang waktu dengan interval 2 menit
