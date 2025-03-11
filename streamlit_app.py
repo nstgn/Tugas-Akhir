@@ -187,22 +187,16 @@ elif menu == "Data Historis":
             st.dataframe(data_filtered.tail(100).iloc[::-1], height=400)  # Urutan terbaru di atas
         with col2:
             st.write("📈 **Grafik Indeks UV**")
-           # Ambil 100 data terbaru
-        latest_data = data.tail(100)
-        
-        # Plot dengan Plotly
-        fig = go.Figure()
-        fig.add_trace(go.Scatter(x=latest_data["Waktu"], y=latest_data["Intensity"],
-                                 mode='lines+markers', name='Intensity',
+            latest_data = data.tail(100)
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=latest_data["Waktu"], y=latest_data["Index"],
+                                 mode='lines+markers', name='Indeks',
                                  line=dict(color='purple'), fill='tozeroy'))
-        
-        fig.update_layout(title='Grafik Intensitas UV (100 Data Terbaru)',
-                          xaxis_title='Waktu',
-                          yaxis_title='Intensitas UV',
+            fig.update_layout(xaxis_title='Waktu',
+                          yaxis_title='Indeks UV',
                           xaxis=dict(rangeslider=dict(visible=True)),  # Scroll horizontal
                           height=500)
-        
-        st.plotly_chart(fig, use_container_width=True)  # Grafik responsif
+            st.plotly_chart(fig, use_container_width=True)  # Grafik responsif
     else: st.warning("⚠️ Data tidak tersedia.")
 # Custom Footer
 st.markdown(
