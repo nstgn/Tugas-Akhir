@@ -186,9 +186,8 @@ elif menu == "Indeks UV":
     """,unsafe_allow_html=True,)
     
     st.subheader("⏳ Prediksi Indeks UV")
-    # Tampilan grid prakiraan
-cols = st.columns(len(future_df))
-for i, row in future_df.iterrows():
+    cols = st.columns(len(future_df))
+    for i, row in future_df.iterrows():
     with cols[i]:
         uv_level = row["Predicted Index"]
         if uv_level < 3:
@@ -222,7 +221,6 @@ for i, row in future_df.iterrows():
             """,
             unsafe_allow_html=True,
         )
-
 
 elif menu == "Panduan Perlindungan":
     st.subheader("🛡️ Panduan Perlindungan")
