@@ -91,6 +91,9 @@ for _ in range(future_steps):
 # Denormalisasi hasil prediksi masa depan
 future_predictions_dnm = np.round (scaler.inverse_transform(np.array(future_predictions).reshape(-1, 1))).astype(int)
 
+# Tampilkan hasil prediksi masa depan dengan waktu
+future_results = pd.DataFrame({'Datetime': future_timestamps, 'Predicted_Index': future_predictions_dnm.flatten()})
+
 # Custom Header
 st.markdown(
     """
@@ -177,7 +180,7 @@ elif menu == "Indeks UV":
     """,unsafe_allow_html=True,)
     
     st.subheader("⏳ Prediksi Indeks UV")
-    cols = st.columns(len(future_df))
+    cols = st.columns(len(future_results))
     for i, row in future_df.iterrows():
         with cols[i]:
             uv_level = row["Predicted Index"]
