@@ -15,8 +15,6 @@ if data is not None and not data.empty:
     data.columns = ["Date", "Time", "Intensity", "Index"]
     data["Waktu"] = pd.to_datetime(data["Date"] + " " + data["Time"])
     data = data.sort_values(by="Waktu")
-    data.set_index('Waktu', inplace=True)
-
 
 # Custom Header
 st.markdown(
