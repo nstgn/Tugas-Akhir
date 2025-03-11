@@ -97,9 +97,59 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# Tampilan Tabel
+# Tampilan Indeks UV (Gauge Chart)
 elif menu == "Tabel Proteksi":
-    
+        last_index = data['Index'].iloc[-1]
+        last_time = data['Waktu'].iloc[-1].time()
+        
+        fig = go.Figure(go.Indicator(
+            mode="gauge+number", value=last_index, gauge={
+                'axis': {'range': [0, 11]},
+                'bar': {'color': "#3098ff"},
+                'steps': [
+                    {'range': [0, 3], 'color': "#00ff00"},
+                    {'range': [3, 6], 'color': "#ffff00"},
+                    {'range': [6, 8], 'color': "#ff6600"},
+                    {'range': [8, 10], 'color': "#ff0000"},
+                    {'range': [10, 11], 'color': "#9900cc"},
+                ]
+            }
+        ))
+
+        fig.update_layout(margin=dict(t=30, b=30, l=30, r=30))
+        st.plotly_chart(fig, use_container_width=True)
+
+        st.markdown(
+            f"""
+            <div style="text-align: center;">
+                <span style="display: inline-block; padding: 5px 15px; border-radius: 5px;
+                            background-color: {'#d4edda' if last_index <= 2 else '#fcfac0' if last_index <= 5 else '#ffc78f' if last_index <= 7 else '#ff8a8a' if last_index <= 10 else '#e7cafc'};">
+                    {"✅ Tingkat aman: Gunakan sunscreen SPF 30+." if last_index <= 2 else
+                     "⚠️ Bahaya sedang: Oleskan sunscreen setiap 2 jam, kenakan pakaian pelindung matahari." if last_index <= 5 else
+                     "⚠️ Bahaya tinggi: Hindari paparan langsung saat siang." if last_index <= 7 else
+                     "⚠️ Bahaya sangat tinggi:Tetap di tempat teduh, gunakan pakaian pelindung & topi." if last_index <= 10 else
+                     "❗ Bahaya ekstrem: Kurangi aktivitas luar ruangan!"}
+               </span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        st.markdown(
+            f"""
+            <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
+                <p><b>Pukul:</b> {last_time.strftime('%H:%M')}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+# Menambahkan tabel saran proteksi
+st.markdown(
+    """
+    <h1 style="text-align: center;margin-top: 40px; margin-bottom: 10px;">Tabel Saran Proteksi</h1>
+    """,
+    unsafe_allow_html=True,
+)
 
 elif menu == "Data Historis":
     if data is not None and not data.empty:
