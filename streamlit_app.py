@@ -6,7 +6,7 @@ from streamlit_gsheets import GSheetsConnection
 import plotly.graph_objects as go
 
 # Koneksi ke Google Sheets
-url = "https://docs.google.com/spreadsheets/d/1SczaIV1JHUSca1hPilByJFFzOi5a8Hkhi0OemlmPQsY/edit?usp=sharing"
+url = "https://docs.google.com/spreadsheets/d/1W9WYq245Q7g4VYn0BWt7x5DcMnhba3-rugeMu2TPM60/edit?gid=0#gid=0"
 conn = st.connection("gsheets", type=GSheetsConnection)
 data = conn.read(spreadsheet=url, usecols=[0, 1, 2, 3], ttl=0)
 
