@@ -12,16 +12,6 @@ data = conn.read(spreadsheet=url, usecols=[0, 1, 2, 3], ttl=0)
 
 # 2 Pre-Processing
 if data is not None and not data.empty:
-import pandas as pd
-import streamlit as st
-
-# Load data
-data = st.file_uploader("Upload file CSV", type=["csv"])
-
-if data is not None:
-    data = pd.read_csv(data)
-    
-    # Pastikan kolom sesuai
     data.columns = ["Date", "Time", "Intensity", "Index"]
 
     # Gabungkan tanggal dan waktu
@@ -45,10 +35,6 @@ if data is not None:
 
     # Interpolasi nilai yang hilang
     data['Index'].interpolate(method='linear', inplace=True)
-
-    # Tampilkan data
-    st.write(data)
-
 
 # Custom Header
 st.markdown(
