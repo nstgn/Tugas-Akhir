@@ -181,7 +181,7 @@ elif menu == "Data Historis":
         selected_columns = ["Date", "Time", "Intensity", "Index"]
         data_filtered = data[selected_columns]
 
-        col1, col2 = st.columns([1, 3]) 
+        col1, col2 = st.columns([2, 2]) 
         with col1:
             st.write("📋 **Tabel Data**")
             st.dataframe(data_filtered.tail(100).iloc[::-1].reset_index(drop=True), height=400)  # Hilangkan indeks
