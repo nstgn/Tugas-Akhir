@@ -93,8 +93,8 @@ future_predictions_dnm = np.round (scaler.inverse_transform(np.array(future_pred
 
 # Tampilkan hasil prediksi masa depan dengan waktu
 future_results = pd.DataFrame({
-    'Time': future_timestamps.strftime("%H:%M"),
-    'Predicted Index': np.floor(future_predictions_scaled).astype(int)
+    'Time': [ts.strftime("%H:%M") for ts in future_timestamps],
+    'Predicted Index': future_predictions_dnm.flatten()
 })
 
 # Custom Header
