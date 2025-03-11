@@ -1,7 +1,13 @@
+#1 Import Library
 import numpy as np
 import pandas as pd
+import tensorflow as tf
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.model_selection import train_test_split
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 import streamlit as st
-import matplotlib.pyplot as plt
 from streamlit_gsheets import GSheetsConnection
 import plotly.graph_objects as go
 
@@ -10,7 +16,7 @@ url = "https://docs.google.com/spreadsheets/d/1W9WYq245Q7g4VYn0BWt7x5DcMnhba3-ru
 conn = st.connection("gsheets", type=GSheetsConnection)
 data = conn.read(spreadsheet=url, usecols=[0, 1, 2, 3], ttl=0)
 
-# 2 Pre-Processing
+# 3 Pre-Processing
 if data is not None and not data.empty:
     data.columns = ["Date", "Time", "Intensity", "Index"]
     data["Waktu"] = pd.to_datetime(data["Date"] + " " + data["Time"])
