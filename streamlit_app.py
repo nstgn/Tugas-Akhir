@@ -17,9 +17,9 @@ if data is not None and not data.empty:
     data = data.sort_values(by="Waktu")
     data.set_index("Waktu", inplace=True)
 
+    data_asli = data.copy()
     last_index = data['Index'].iloc[-1]
     last_time = data.index[-1]
-    data_before_interpolation = data.copy()
     
     data = data.between_time('06:00', '18:05')
     date_range = pd.date_range(start=data.index.min(), end=data.index.max(), freq='2min')
@@ -221,6 +221,7 @@ elif menu == "Panduan Perlindungan":
 elif menu == "Data Historis":
      if data is not None and not data.empty:
         st.subheader("📊 Data Historis Indeks UV")
+        data_asli = data.copy()
         selected_columns = ["Date", "Time", "Intensity", "Index"]
         data_filtered = data[selected_columns]
 
