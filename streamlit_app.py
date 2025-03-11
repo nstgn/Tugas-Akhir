@@ -75,9 +75,6 @@ if menu == "Beranda":
         </p>
     </div>
     """, unsafe_allow_html=True)
-    st.write("🔍 Cek Data Sebelum Interpolasi")
-    st.dataframe(data_asli.head())
-
 
 elif menu == "Indeks UV":
     st.subheader("🌞 Kondisi UV Sekarang")
@@ -226,10 +223,7 @@ elif menu == "Data Historis":
         st.subheader("📊 Data Historis Indeks UV")
         selected_columns = ["Date", "Time", "Intensity", "Index"]
         data_filtered = data_asli[selected_columns]
-
-        if "Waktu" not in data_asli.columns:
-        data_asli["Waktu"] = pd.to_datetime(data_asli["Date"] + " " + data_asli["Time"])
-
+        
         col1, col2 = st.columns([2, 2.5]) 
         with col1:
             st.write("📋 **Tabel Data**")
@@ -237,9 +231,9 @@ elif menu == "Data Historis":
             
         with col2:
             st.write("📈 **Grafik Indeks UV**")
-            latest_data = data.tail(100)
+            latest_data = data_asli.tail(100)
             fig = go.Figure()
-            fig.add_trace(go.Scatter(x=latest_data["Waktu"], y=latest_data["Index"],
+            fig.add_trace(go.Scatter(x=latest_data["Waktu"].dt.strftime('%H:%M'), y=latest_data["Index"],
                                  mode='lines+markers', name='Indeks',
                                  line=dict(color='#6a0dad'), fill='tozeroy'))
             fig.update_layout(
