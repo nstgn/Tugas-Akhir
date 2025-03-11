@@ -177,31 +177,54 @@ elif menu == "Tabel Proteksi":
 
 elif menu == "Data Historis":
     if data is not None and not data.empty:
-        st.subheader("📊 Data Historis Indeks UV")
+    st.subheader("📊 Data Historis Indeks UV")
+    selected_columns = ["Date", "Time", "Intensity", "Index"]
+    data_filtered = data[selected_columns].copy()
+    data_filtered["Time"] = pd.to_datetime(data_filtered["Time"], format="%H:%M")
+    
+    col1, col2 = st.columns([1, 2], gap="medium")  # Memberikan sedikit jarak antar kolom
+    with col1:
+        st.write("📋 **Tabel Data**")
+        st.dataframe(data_filtered.tail(100).iloc[::-1], height=350)  # Mengurangi tinggi tabel sedikit
+    
+    with col2:
+        st.write("📈 **Grafik Indeks UV**")
+        
         # Ambil 100 data terbaru
         latest_data = data.tail(100)
         
         # Pilihan model scroll
-        scroll_type = st.selectbox("Pilih Mode Scroll:", ["Horizontal Scroll", "Paging dengan Slider", "Zoom + Scroll"])
+        scroll_type = st.selectbox("Pilih Mode Scroll:", ["Horizontal Scroll", "Paging dengan Slider", "Zoom + Scroll", "Infinite Scroll"])
         
         # Plot dengan Plotly
         fig = go.Figure()
-        fig.add_trace(go.Scatter(x=latest_data["Waktu"], y=latest_data["Intensity"],
-                                 mode='lines+markers', name='Intensity',
-                                 line=dict(color='purple'), fill='tozeroy'))
         
         if scroll_type == "Horizontal Scroll":
+            fig.add_trace(go.Scatter(x=latest_data["Waktu"], y=latest_data["Intensity"],
+                                     mode='lines+markers', name='Intensity',
+                                     line=dict(color='purple'), fill='tozeroy'))
             fig.update_layout(xaxis=dict(range=[latest_data["Waktu"].iloc[-50], latest_data["Waktu"].iloc[-1]],
                                          rangeslider=dict(visible=True)))
+        
         elif scroll_type == "Paging dengan Slider":
             start_idx = st.slider("Geser untuk memilih data:", 0, len(latest_data)-50, len(latest_data)-50)
             selected_data = latest_data.iloc[start_idx:start_idx+50]
-            fig = go.Figure()
             fig.add_trace(go.Scatter(x=selected_data["Waktu"], y=selected_data["Intensity"],
                                      mode='lines+markers', name='Intensity',
                                      line=dict(color='purple'), fill='tozeroy'))
+        
         elif scroll_type == "Zoom + Scroll":
+            fig.add_trace(go.Scatter(x=latest_data["Waktu"], y=latest_data["Intensity"],
+                                     mode='lines+markers', name='Intensity',
+                                     line=dict(color='purple'), fill='tozeroy'))
             fig.update_layout(dragmode="pan", xaxis=dict(rangeslider=dict(visible=True)))
+        
+        elif scroll_type == "Infinite Scroll":
+            scroll_step = st.number_input("Jumlah data ditampilkan:", min_value=10, max_value=100, value=50, step=10)
+            selected_data = latest_data.tail(scroll_step)
+            fig.add_trace(go.Scatter(x=selected_data["Waktu"], y=selected_data["Intensity"],
+                                     mode='lines+markers', name='Intensity',
+                                     line=dict(color='purple'), fill='tozeroy'))
         
         fig.update_layout(title='Grafik Intensitas UV (100 Data Terbaru)',
                           xaxis_title='Waktu',
@@ -212,6 +235,7 @@ elif menu == "Data Historis":
         st.plotly_chart(fig, use_container_width=True)  # Grafik responsif
 else:
     st.warning("⚠️ Data tidak tersedia.")
+
 # Custom Footer
 st.markdown(
     """
