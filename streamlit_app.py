@@ -18,6 +18,7 @@ if data is not None and not data.empty:
     data["Time"] = data["Waktu"].dt.time.astype(str)
     data = data.sort_values(by="Waktu")
     data.set_index('Waktu', inplace=True)
+    data_filtered = data.copy()
     data = data[['Index']].copy()
     last_index = data['Index'].iloc[-1]
     last_time = data.index[-1]
