@@ -179,8 +179,8 @@ elif menu == "Data Historis":
     if data is not None and not data.empty:
         st.subheader("📊 Data Historis Indeks UV")
         selected_columns = ["Date", "Time", "Intensity", "Index"]
-        data_filtered = data[selected_columns]
-        data_filtered["Time"] = pd.to_datetime(data_filtered["Time"], format="%H:%M:%S")
+        data_filtered = data[selected_columns].copy()
+        data_filtered["Time"] = pd.to_datetime(data_filtered["Time"], format="%H:%M")
       
         col1, col2 = st.columns([1, 2]) 
         with col1:
