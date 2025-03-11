@@ -99,12 +99,11 @@ elif menu == "Indeks UV":
 
 elif menu == "Panduan Perlindungan":
     st.subheader("🛡️ Panduan Perlindungan")
-        st.markdown("""
+    st.markdown("""
     <h1 style="text-align: center;margin-top: 40px; margin-bottom: 10px;">Tabel Saran Proteksi</h1>
     """,unsafe_allow_html=True,)
     
-    st.markdown(
-    """
+    st.markdown("""
     <table style="width:100%; border-collapse: collapse; text-align: center;">
         <tr>
             <th style="border: 1px solid black; padding: 8px;">Kategori</th>
@@ -172,9 +171,7 @@ elif menu == "Panduan Perlindungan":
             </td>
         </tr>
     </table>
-    """,
-    unsafe_allow_html=True,
-)
+    """,unsafe_allow_html=True,)
 
 
 elif menu == "Data Historis":
@@ -207,8 +204,7 @@ elif menu == "Data Historis":
         st.warning("⚠️ Data tidak tersedia.")
 
 # Custom Footer
-st.markdown(
-    """
+st.markdown("""
     <style>
     .footer {
         position: fixed; bottom: 0; right: 70px; font-size: 12px; text-align: left; margin: 0; padding: 5px 10px;
