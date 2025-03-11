@@ -198,7 +198,7 @@ elif menu == "Indeks UV":
         st.markdown(
             f"""
             <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
-                <h3 style="color:white;">{row['Time'].strftime('%H:%M')}</h3>
+                <h3 style="color:white;">{row['future_timestamps'].strftime('%H:%M')}</h3>
                 <h2 style="color:white;">{icon} {uv_level}</h2>
                 <p style="color:white;">{desc}</p>
             </div>
