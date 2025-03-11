@@ -221,9 +221,8 @@ elif menu == "Panduan Perlindungan":
 elif menu == "Data Historis":
     if data is not None and not data.empty:
         st.subheader("📊 Data Historis Indeks UV")
-        selected_columns = ["Date", "Time", "Intensity", "Index"]
-        data_filtered = data_filtered[selected_columns]
-
+        data_filtered = data_filtered.loc[data.index]
+        data_filtered = data_filtered[["Date", "Time", "Intensity", "Index"]]
 
         col1, col2 = st.columns([2, 2.5]) 
         with col1:
