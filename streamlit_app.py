@@ -178,27 +178,22 @@ elif menu == "Tabel Proteksi":
 elif menu == "Data Historis":
     if data is not None and not data.empty:
         st.subheader("📊 Data Historis Indeks UV")
-
-        # Memilih hanya kolom yang diperlukan
-        selected_columns = ["Date", "Time", "Index", "Intensity"]
-        data_filtered = data[selected_columns]  # Hanya menyimpan kolom yang diperlukan
-
-        # Membuat dua kolom: kiri (tabel) & kanan (grafik)
-        col1, col2 = st.columns([1, 2])  # Kolom kiri lebih kecil dari kanan
-
+        selected_columns = ["Date", "Time", "Intensity", "Index"]
+        data_filtered = data[selected_columns]
+      
+        col1, col2 = st.columns([1, 2]) 
         with col1:
-            st.write("📋 **Tabel Data (Terbaru di Atas)**")
-            st.dataframe(data_filtered.tail(20).iloc[::-1], height=400)  # Urutan terbaru di atas
-
+            st.write("📋 **Tabel Data**")
+            st.dataframe(data_filtered.tail(100).iloc[::-1], height=400)  # Urutan terbaru di atas
         with col2:
             st.write("📈 **Grafik Indeks UV**")
             fig = px.line(
                 data, 
-                x="Date",  # Gunakan Date sebagai sumbu X untuk visualisasi waktu
+                x="Waktu",  # Gunakan Date sebagai sumbu X untuk visualisasi waktu
                 y="Index", 
                 markers=True, 
                 title="Grafik Indeks UV Seiring Waktu",
-                labels={"Index": "Indeks UV", "Date": "Tanggal"}
+                labels={"Index": "Indeks UV", "Waktu": "Pukul"}
             )
             fig.update_traces(line=dict(color="purple"), fill="tozeroy")  # Warna & area fill
             fig.update_layout(xaxis=dict(rangeslider=dict(visible=True)))  # Scroll horizontal
