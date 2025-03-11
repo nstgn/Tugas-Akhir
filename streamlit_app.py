@@ -88,6 +88,8 @@ elif menu == "Indeks UV":
     st.subheader("🌞 Kondisi UV Sekarang")
     last_index = data['Index'].iloc[-1]
     last_time = data['Waktu'].iloc[-1].time()
+    #last_time = data.index[-1].time()  # Ambil waktu dari index
+
         
     fig = go.Figure(go.Indicator(
         mode="gauge+number", value=last_index, gauge={
