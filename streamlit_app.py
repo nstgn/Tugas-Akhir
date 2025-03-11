@@ -241,8 +241,8 @@ elif menu == "Data Historis":
                 xaxis=dict(rangeslider=dict(visible=True)),
                 height=500,margin=dict(t=30, b=20))
             st.plotly_chart(fig, use_container_width=True)
-    else:
-        st.warning("⚠️ Data tidak tersedia.")
+     else:
+         st.warning("⚠️ Data tidak tersedia.")
 
 # Custom Footer
 st.markdown("""
