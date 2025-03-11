@@ -17,7 +17,7 @@ if data is not None and not data.empty:
     data = data.sort_values(by="Waktu")
     data.set_index("Waktu", inplace=True)
 
-    data = data[['Index']].copy()
+    data = data[["Date", "Time", "Intensity", "Index"]].copy()
     last_index = data['Index'].iloc[-1]
     last_time = data.index[-1]
     data = data.between_time('06:00', '18:05')
@@ -223,8 +223,9 @@ elif menu == "Data Historis":
 
         col1, col2 = st.columns([2, 2.5]) 
         with col1:
-            st.write("📋 **Tabel Data**")  
-            st.dataframe(data.tail(100).reset_index().rename(data.columns), height=400)
+            data_display = data.tail(100).reset_index()
+            data_display.columns = ["Waktu", "Date", "Time", "Intensity", "Index"]
+            st.dataframe(data_display, height=400)
 
         with col2:
             st.write("📈 **Grafik Indeks UV**")
