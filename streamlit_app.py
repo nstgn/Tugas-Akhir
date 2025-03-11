@@ -55,26 +55,25 @@ elif menu == "Indeks UV":
     last_index = data['Index'].iloc[-1]
     last_time = data['Waktu'].iloc[-1].time()
         
-        fig = go.Figure(go.Indicator(
-            mode="gauge+number", value=last_index, gauge={
-                'axis': {'range': [0, 11]},
-                'bar': {'color': "#3098ff"},
-                'steps': [
-                    {'range': [0, 3], 'color': "#00ff00"},
-                    {'range': [3, 6], 'color': "#ffff00"},
-                    {'range': [6, 8], 'color': "#ff6600"},
-                    {'range': [8, 10], 'color': "#ff0000"},
-                    {'range': [10, 11], 'color': "#9900cc"},
-                ]
-            }
-        ))
+    fig = go.Figure(go.Indicator(
+        mode="gauge+number", value=last_index, gauge={
+            'axis': {'range': [0, 11]},
+            'bar': {'color': "#3098ff"},
+            'steps': [
+                {'range': [0, 3], 'color': "#00ff00"},
+                {'range': [3, 6], 'color': "#ffff00"},
+                {'range': [6, 8], 'color': "#ff6600"},
+                {'range': [8, 10], 'color': "#ff0000"},
+                {'range': [10, 11], 'color': "#9900cc"},
+            ]
+        }
+    ))
+    fig.update_layout(
+        margin=dict(t=30, b=30, l=30, r=30)
+        height=250, width=400,)
+    st.plotly_chart(fig, use_container_width=True)
 
-        fig.update_layout(
-            margin=dict(t=30, b=30, l=30, r=30)
-            height=250, width=400,)
-        st.plotly_chart(fig, use_container_width=True)
-
-        st.markdown(
+    st.markdown(
             f"""
             <div style="text-align: center;">
                 <span style="display: inline-block; padding: 5px 15px; border-radius: 5px;
