@@ -175,7 +175,7 @@ elif menu == "Panduan Perlindungan":
 
 
 elif menu == "Data Historis":
-        if data is not None and not data.empty:
+    if data is not None and not data.empty:
         st.subheader("📊 Data Historis Indeks UV")
         selected_columns = ["Date", "Time", "Intensity", "Index"]
         data_filtered = data[selected_columns]
@@ -185,7 +185,7 @@ elif menu == "Data Historis":
             st.write("📋 **Tabel Data**")
             st.dataframe(data_filtered.tail(100).iloc[::-1].reset_index(drop=True), height=400)  
             
-        with col2:# Hilangkan indeks
+        with col2:
             st.write("📈 **Grafik Indeks UV**")
             latest_data = data.tail(100)
             fig = go.Figure()
@@ -193,12 +193,9 @@ elif menu == "Data Historis":
                                  mode='lines+markers', name='Indeks',
                                  line=dict(color='#6a0dad'), fill='tozeroy'))
             fig.update_layout(
-                xaxis_title='Waktu',
-                yaxis_title='Indeks UV',
+                xaxis_title='Waktu',yaxis_title='Indeks UV',
                 xaxis=dict(rangeslider=dict(visible=True)),
-                height=500,
-                margin=dict(t=30, b=20)
-            )
+                height=500,margin=dict(t=30, b=20))
             st.plotly_chart(fig, use_container_width=True)
     else:
         st.warning("⚠️ Data tidak tersedia.")
