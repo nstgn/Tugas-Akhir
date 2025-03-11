@@ -40,8 +40,13 @@ menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Indeks UV", "Data Historis"])
 
 # Tampilan Beranda
 if menu == "Beranda":
+    st.write("Selamat datang di halaman Beranda!")
+
 elif menu == "Indeks UV":
+    st.write("Halaman Indeks UV")
+
 elif menu == "Data Historis":
+    st.write("Halaman Data Historis")
 
 # Custom Footer
 st.markdown(
