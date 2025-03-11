@@ -71,6 +71,8 @@ if menu == "Beranda":
         </p>
     </div>
     """, unsafe_allow_html=True)
+    st.write ("last_index")
+    st.write ("last_time")
 
 
 elif menu == "Indeks UV":
