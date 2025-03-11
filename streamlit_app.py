@@ -98,32 +98,6 @@ st.markdown(
 )
 
 elif menu == "Data Historis":
-    if data is not None and not data.empty:
-        st.subheader("📊 Data Historis Indeks UV")
-
-        # Membuat dua kolom: kiri (tabel) & kanan (grafik)
-        col1, col2 = st.columns([1, 2])  # Kolom kiri lebih kecil dari kanan
-
-        with col1:
-            st.write("📋 **Tabel Data**")
-            st.dataframe(data.tail(20), height=400)  # Menampilkan 20 data terbaru
-
-        with col2:
-            st.write("📈 **Grafik Indeks UV**")
-            fig = px.line(
-                data, 
-                x=data.index, 
-                y="Index", 
-                markers=True, 
-                title="Grafik Indeks UV Seiring Waktu",
-                labels={"Index": "Indeks UV", "index": "Waktu"}
-            )
-            fig.update_traces(line=dict(color="purple"), fill="tozeroy")  # Warna & area fill
-            fig.update_layout(xaxis=dict(rangeslider=dict(visible=True)))  # Scroll horizontal
-
-            st.plotly_chart(fig, use_container_width=True)  # Grafik responsif
-    else:
-        st.warning("Data tidak tersedia.")
 
 # Custom Footer
 st.markdown(
