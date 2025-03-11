@@ -183,7 +183,7 @@ elif menu == "Indeks UV":
     cols = st.columns(len(future_results))
     for i, row in future_results.iterrows():
         with cols[i]:
-            uv_level = row["Predicted Index"]
+            uv_level = row["Predicted_Index"]
             if uv_level < 3: 
                 icon, desc, bg_color = "🟢", "Low", "#00ff00"
             elif uv_level < 6:
