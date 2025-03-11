@@ -17,7 +17,6 @@ if data is not None and not data.empty:
     data = data.sort_values(by="Waktu")
     data.set_index("Waktu", inplace=True)
 
-    data = data[['Index']].copy()
     last_index = data['Index'].iloc[-1]
     last_time = data.index[-1]
     data_before_interpolation = data.copy()
@@ -220,19 +219,19 @@ elif menu == "Panduan Perlindungan":
 
 
 elif menu == "Data Historis":
-    if data is not None and not data.empty:
+     if data is not None and not data.empty:
         st.subheader("📊 Data Historis Indeks UV")
+        selected_columns = ["Date", "Time", "Intensity", "Index"]
+        data_filtered = data[selected_columns]
 
         col1, col2 = st.columns([2, 2.5]) 
         with col1:
-            st.write("📋 **Tabel Data (Sebelum Interpolasi)**")
-            selected_columns = ["Date", "Time", "Intensity", "Index"]
-            data_filtered = data_before_interpolation[selected_columns] 
+            st.write("📋 **Tabel Data**")
             st.dataframe(data_filtered.tail(100).iloc[::-1].reset_index(drop=True), height=400)  
-
+            
         with col2:
             st.write("📈 **Grafik Indeks UV**")
-            latest_data = data_before_interpolation.tail(100)
+            latest_data = data.tail(100)
             fig = go.Figure()
             fig.add_trace(go.Scatter(x=latest_data["Waktu"], y=latest_data["Index"],
                                  mode='lines+markers', name='Indeks',
