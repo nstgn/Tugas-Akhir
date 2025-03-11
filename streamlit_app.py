@@ -188,28 +188,18 @@ elif menu == "Indeks UV":
     st.subheader("⏳ Prediksi Indeks UV")
     cols = st.columns(len(future_df))
     for i, row in future_df.iterrows():
-    with cols[i]:
-        uv_level = row["Predicted Index"]
-        if uv_level < 3:
-            icon = "🟢"
-            desc = "Low"
-            bg_color = "#00ff00"
-        elif uv_level < 6:
-            icon = "🟡"
-            desc = "Moderate"
-            bg_color = "#ffe600"
-        elif uv_level < 8:
-            icon = "🟠"
-            desc = "High"
-            bg_color = "#ff8c00"
-        elif uv_level < 11:
-            icon = "🔴"
-            desc = "Very High"
-            bg_color = "#ff0000"
-        else:
-            icon = "🟣"
-            desc = "Extreme"
-            bg_color = "#9900cc"
+        with cols[i]:
+            uv_level = row["Predicted Index"]
+            if uv_level < 3: 
+                icon, desc, bg_color = "🟢", "Low", "#00ff00"
+            elif uv_level < 6:
+                icon, desc, bg_color = "🟡", "Moderate", "#ffe600"
+            elif uv_level < 8:
+                icon, desc, bg_color = "🟠", "High", "#ff8c00"
+            elif uv_level < 11:
+                icon, desc, bg_color = "🔴", "Very High", "#ff0000"
+            else:
+                icon, desc, bg_color = "🟣", "Extreme", "#9900cc"
 
         st.markdown(
             f"""
