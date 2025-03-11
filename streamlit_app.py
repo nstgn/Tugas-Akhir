@@ -35,6 +35,16 @@ if data is not None and not data.empty:
 scaler = MinMaxScaler(feature_range=(0, 1))
 data ['Index_scaled'] = scaler.fit_transform(data[['Index']])
 
+#5 Inisialisasi Timestep
+def prepare_data(series, n_steps):
+    X, y = [], []
+    for i in range(len(series)-n_steps):
+        X.append(series[i:i+n_steps])
+        y.append(series[i+n_steps])
+    return np.array(X), np.array(y)
+n_steps = 7
+X, y = prepare_data(data['Index_scaled'].values, n_steps)
+
 # Custom Header
 st.markdown(
     """
