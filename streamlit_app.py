@@ -75,8 +75,8 @@ if menu == "Beranda":
         </p>
     </div>
     """, unsafe_allow_html=True)
-    st.write (last_index)
-    st.write (last_time)
+    st.write("🔍 Cek Data Sebelum Interpolasi")
+    st.dataframe(data_asli.head())
 
 
 elif menu == "Indeks UV":
