@@ -232,7 +232,7 @@ elif menu == "Data Historis":
              with col1:
                  st.write("📋 **Tabel Data**")
                  st.dataframe(data_filtered.tail(100).iloc[::-1].reset_index(drop=True), height=400)  
-            with col2:
+             with col2:
                 st.write("📈 **Grafik Indeks UV**")
                 latest_data = data.tail(100)
                 fig = go.Figure()
