@@ -229,23 +229,24 @@ elif menu == "Data Historis":
          else:
              data_filtered = data_asli 
              
-         col1, col2 = st.columns([2, 2.5]) 
-             with col1:
-                 st.write("📋 **Tabel Data**")
-                 st.dataframe(data_filtered.tail(100).iloc[::-1].reset_index(drop=True), height=400)  
-             with col2:
-                st.write("📈 **Grafik Indeks UV**")
-                latest_data = data.tail(100)
-                fig = go.Figure()
-                fig.add_trace(go.Scatter(x=latest_data["Waktu"], y=latest_data["Index"],
+         col1, col2 = st.columns([2, 2.5])
+         with col1:
+            st.write("📋 **Tabel Data**")
+            st.dataframe(data_filtered.tail(100).iloc[::-1].reset_index(drop=True), height=400)  
+            
+        with col2:
+            st.write("📈 **Grafik Indeks UV**")
+            latest_data = data.tail(100)
+            fig = go.Figure()
+            fig.add_trace(go.Scatter(x=latest_data["Waktu"], y=latest_data["Index"],
                                  mode='lines+markers', name='Indeks',
                                  line=dict(color='#6a0dad'), fill='tozeroy'))
-                fig.update_layout(
-                    xaxis_title='Waktu',yaxis_title='Indeks UV',
-                    xaxis=dict(rangeslider=dict(visible=True)),
-                    height=500,margin=dict(t=30, b=20))
-                
-                st.plotly_chart(fig, use_container_width=True)
+            fig.update_layout(
+                xaxis_title='Waktu',yaxis_title='Indeks UV',
+                xaxis=dict(rangeslider=dict(visible=True)),
+                height=500,margin=dict(t=30, b=20))
+            st.plotly_chart(fig, use_container_width=True)
+        
      else:
          st.warning("⚠️ Data tidak tersedia.")
 
