@@ -223,12 +223,13 @@ elif menu == "Data Historis":
          st.subheader("📊 Data Historis Indeks UV")
          data_asli = data.copy()
          selected_columns = ["Date", "Time", "Intensity", "Index"]
+         
          if all(col in data_asli.columns for col in selected_columns):
              data_filtered = data_asli[selected_columns]
          else:
              data_filtered = data_asli 
              
-             col1, col2 = st.columns([2, 2.5]) 
+         col1, col2 = st.columns([2, 2.5]) 
              with col1:
                  st.write("📋 **Tabel Data**")
                  st.dataframe(data_filtered.tail(100).iloc[::-1].reset_index(drop=True), height=400)  
