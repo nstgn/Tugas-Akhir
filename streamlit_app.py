@@ -14,18 +14,9 @@ data = conn.read(spreadsheet=url, usecols=[0, 1, 2, 3], ttl=0)
 if data is not None and not data.empty:
     data.columns = ["Date", "Time", "Intensity", "Index"]
     data["Waktu"] = pd.to_datetime(data["Date"] + " " + data["Time"])
-    data["Date"] = data["Waktu"].dt.date.astype(str)  
-    data["Time"] = data["Waktu"].dt.time.astype(str)
     data = data.sort_values(by="Waktu")
     data.set_index('Waktu', inplace=True)
-    data_filtered = data.copy()
-    data = data[['Index']].copy()
-    last_index = data['Index'].iloc[-1]
-    last_time = data.index[-1]
-    data = data.between_time('06:00', '18:05')
-    date_range = pd.date_range(start=data.index.min(), end=data.index.max(), freq='2min')
-    data = data.reindex(date_range)
-    data['Index'].interpolate(method='linear', inplace=True)
+
 
 # Custom Header
 st.markdown(
@@ -78,7 +69,7 @@ if menu == "Beranda":
 elif menu == "Indeks UV":
     st.subheader("🌞 Kondisi UV Sekarang")
     last_index = data['Index'].iloc[-1]
-    last_time = data.index[-1].time()
+    last_time = data.Waktu[-1].time()
         
     fig = go.Figure(go.Indicator(
         mode="gauge+number", value=last_index, gauge={
@@ -222,8 +213,8 @@ elif menu == "Panduan Perlindungan":
 elif menu == "Data Historis":
     if data is not None and not data.empty:
         st.subheader("📊 Data Historis Indeks UV")
-        data_filtered = data_filtered.loc[data.index]
-        data_filtered = data_filtered[["Date", "Time", "Intensity", "Index"]]
+        selected_columns = ["Date", "Time", "Intensity", "Index"]
+        data_filtered = data[selected_columns]
 
         col1, col2 = st.columns([2, 2.5]) 
         with col1:
