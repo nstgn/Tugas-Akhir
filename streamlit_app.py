@@ -41,19 +41,28 @@ menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Indeks UV", "Panduan Perlindu
 # Tampilan Beranda
 if menu == "Beranda":
     st.markdown(""" 
-    <h1 style='text-align: center; color: #6a0dad;'> SISTEM PREDIKSI INDEKS UV</h1>
+    <h1 style='text-align: center; color: #6a0dad; font-size: 32px; font-weight: bold;'> 
+        SISTEM PREDIKSI INDEKS UV 
+    </h1>
+    <hr style='border: 2px solid #6a0dad; width: 50%; margin: auto;'>
     """, unsafe_allow_html=True)
     
     st.markdown("""
-    <div style="max-width: 600px; margin: auto; text-align: left;">
-        <p style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">Selamat datang❕</p>
-        <p style="text-align: justify;">
-            Sistem ini menggunakan data dari sensor ML8511 untuk memprediksi indeks UV dengan model 
-            Long Short-Term Memory (LSTM). Prediksi ini membantu dalam memahami pola paparan UV serta 
-            tindakan pencegahan yang diperlukan berdasarkan estimasi indeks UV dalam beberapa jam ke depan.
+    <div style="max-width: 650px; margin: auto; text-align: justify; padding: 20px; background-color: #f9f9f9; 
+                border-radius: 10px; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);">
+        <h2 style="text-align: center; color: #6a0dad; font-size: 24px; font-weight: bold; margin-bottom: 10px;">
+            Selamat Datang!
+        </h2>
+        <p style="font-size: 16px; line-height: 1.6; color: #333;">
+            Sistem ini menggunakan data dari sensor <b>ML8511</b> untuk memprediksi indeks UV dengan model 
+            <b>Long Short-Term Memory (LSTM)</b>. Prediksi ini bertujuan untuk memahami pola paparan UV serta 
+            memberikan informasi yang mendukung tindakan pencegahan secara lebih akurat dan efisien. 
+            Dengan estimasi indeks UV dalam beberapa jam ke depan, sistem ini membantu meningkatkan kewaspadaan 
+            terhadap risiko paparan radiasi UV yang berlebihan.
         </p>
     </div>
     """, unsafe_allow_html=True)
+
 
 elif menu == "Indeks UV":
     st.subheader("🌞 Kondisi UV Sekarang")
