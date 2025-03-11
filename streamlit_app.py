@@ -98,7 +98,7 @@ st.markdown(
 )
 
 elif menu == "Tabel Proteksi":
-    st.markdown(
+st.markdown(
     """
     <table style="width:100%; border-collapse: collapse; text-align: center;">
         <tr>
@@ -170,6 +170,7 @@ elif menu == "Tabel Proteksi":
     """,
     unsafe_allow_html=True,
 )
+
 
 elif menu == "Data Historis":
     if data is not None and not data.empty:
