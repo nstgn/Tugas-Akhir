@@ -181,14 +181,12 @@ elif menu == "Data Historis":
         selected_columns = ["Date", "Time", "Intensity", "Index"]
         data_filtered = data[selected_columns]
 
-        col1, col2, col3 = st.columns([2, 0.5, 2]) 
+        col1, col2 = st.columns([2, 2.5]) 
         with col1:
             st.write("📋 **Tabel Data**")
             st.dataframe(data_filtered.tail(100).iloc[::-1].reset_index(drop=True), height=400)  
             
         with col2:# Hilangkan indeks
-
-        with col3:
             st.write("📈 **Grafik Indeks UV**")
             latest_data = data.tail(100)
             fig = go.Figure()
