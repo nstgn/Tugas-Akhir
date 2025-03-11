@@ -12,14 +12,43 @@ data = conn.read(spreadsheet=url, usecols=[0, 1, 2, 3], ttl=0)
 
 # 2 Pre-Processing
 if data is not None and not data.empty:
+import pandas as pd
+import streamlit as st
+
+# Load data
+data = st.file_uploader("Upload file CSV", type=["csv"])
+
+if data is not None:
+    data = pd.read_csv(data)
+    
+    # Pastikan kolom sesuai
     data.columns = ["Date", "Time", "Intensity", "Index"]
+
+    # Gabungkan tanggal dan waktu
     data["Waktu"] = pd.to_datetime(data["Date"] + " " + data["Time"])
     data = data.sort_values(by="Waktu")
-    data.set_index('Waktu', inplace=True)
-    data = data.between_time('06:00', '18:05')
-    date_range = pd.date_range(start=data.index.min(), end=data.index.max(), freq='2min')
+
+    # Set index ke waktu
+    data.set_index("Waktu", inplace=True)
+
+    # Ambil hanya kolom Index
+    data = data[['Index']].copy()
+
+    # Ambil data antara jam 06:00 - 18:05
+    data = data.between_time("06:00", "18:05")
+
+    # Buat rentang waktu dengan interval 2 menit
+    date_range = pd.date_range(start=data.index.min(), end=data.index.max(), freq="2min")
+
+    # Lakukan reindex agar sesuai dengan rentang waktu
     data = data.reindex(date_range)
+
+    # Interpolasi nilai yang hilang
     data['Index'].interpolate(method='linear', inplace=True)
+
+    # Tampilkan data
+    st.write(data)
+
 
 # Custom Header
 st.markdown(
