@@ -180,6 +180,7 @@ elif menu == "Data Historis":
         st.subheader("📊 Data Historis Indeks UV")
         selected_columns = ["Date", "Time", "Intensity", "Index"]
         data_filtered = data[selected_columns]
+        data_filtered["Time"] = pd.to_datetime(data_filtered["Time"], format="%H:%M:%S")
       
         col1, col2 = st.columns([1, 2]) 
         with col1:
@@ -188,7 +189,7 @@ elif menu == "Data Historis":
         with col2:
             st.write("📈 **Grafik Indeks UV**")
             fig = px.line(
-                data, 
+                data_filtered, 
                 x="Time",  # Gunakan Date sebagai sumbu X untuk visualisasi waktu
                 y="Index", 
                 markers=True, 
