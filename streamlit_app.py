@@ -17,20 +17,12 @@ if data is not None and not data.empty:
     data = data.sort_values(by="Waktu")
     data.set_index("Waktu", inplace=True)
 
-    # Ambil hanya kolom Index
     data = data[['Index']].copy()
-
     last_index = data['Index'].iloc[-1]
     last_time = data.index[-1]
-    data = data.between_time("06:00", "18:05")
-
-    # Buat rentang waktu dengan interval 2 menit
-    date_range = pd.date_range(start=data.index.min(), end=data.index.max(), freq="2min")
-
-    # Lakukan reindex agar sesuai dengan rentang waktu
+    data = data.between_time('06:00', '18:05')
+    date_range = pd.date_range(start=data.index.min(), end=data.index.max(), freq='2min')
     data = data.reindex(date_range)
-
-    # Interpolasi nilai yang hilang
     data['Index'].interpolate(method='linear', inplace=True)
 
 # Custom Header
