@@ -92,7 +92,10 @@ for _ in range(future_steps):
 future_predictions_dnm = np.round (scaler.inverse_transform(np.array(future_predictions).reshape(-1, 1))).astype(int)
 
 # Tampilkan hasil prediksi masa depan dengan waktu
-future_results = pd.DataFrame({'Datetime': future_timestamps, 'Predicted_Index': future_predictions_dnm.flatten()})
+future_results = pd.DataFrame({
+    'Time': future_timestamps.strftime("%H:%M"),
+    'Predicted Index': np.floor(future_predictions_scaled).astype(int)
+})
 
 # Custom Header
 st.markdown(
