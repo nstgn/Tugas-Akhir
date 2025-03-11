@@ -220,7 +220,7 @@ elif menu == "Panduan Perlindungan":
 
 elif menu == "Data Historis":
      if data is not None and not data.empty:
-        st.subheader("📊 Data Historis Indeks UV")
+         st.subheader("📊 Data Historis Indeks UV")
          data_asli = data.copy()
          selected_columns = ["Date", "Time", "Intensity", "Index"]
          if all(col in data_asli.columns for col in selected_columns):
