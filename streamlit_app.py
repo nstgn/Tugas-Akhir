@@ -234,7 +234,7 @@ elif menu == "Data Historis":
             
         with col2:
             st.write("📈 **Grafik Indeks UV**")
-            latest_data = data.tail(100)
+            latest_data = data_asli.tail(100)
             fig = go.Figure()
             fig.add_trace(go.Scatter(x=latest_data["Time"], y=latest_data["Index"],
                                  mode='lines+markers', name='Indeks',
