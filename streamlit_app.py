@@ -36,7 +36,7 @@ st.markdown(
 
 # Navigasi Sidebar
 st.sidebar.title("Navigasi")
-menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Indeks UV", "abel Proteksi", "Data Historis"])
+menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Indeks UV", "Tabel Proteksi", "Data Historis"])
 
 # Tampilan Beranda
 if menu == "Beranda":
@@ -45,15 +45,15 @@ if menu == "Beranda":
     """, unsafe_allow_html=True)
     
     st.markdown("""
-        <div style="text-align: center;">
-            <h3>Selamat datang❕</h3>
-            <p style="text-align: justify; max-width: 600px; margin: auto;">
-                Sistem ini menggunakan data dari sensor ML8511 untuk memprediksi indeks UV dengan model 
-                Long Short-Term Memory (LSTM). Prediksi ini membantu dalam memahami pola paparan UV serta 
-                tindakan pencegahan yang diperlukan berdasarkan estimasi indeks UV dalam beberapa jam ke depan.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
+    <div style="max-width: 600px; margin: auto; text-align: left;">
+        <p style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">Selamat datang❕</p>
+        <p style="text-align: justify;">
+            Sistem ini menggunakan data dari sensor ML8511 untuk memprediksi indeks UV dengan model 
+            Long Short-Term Memory (LSTM). Prediksi ini membantu dalam memahami pola paparan UV serta 
+            tindakan pencegahan yang diperlukan berdasarkan estimasi indeks UV dalam beberapa jam ke depan.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
 
 elif menu == "Indeks UV":
     last_index = data['Index'].iloc[-1]
@@ -79,11 +79,11 @@ elif menu == "Indeks UV":
     st.plotly_chart(fig, use_container_width=True)
     st.markdown(f"""
     <div style="text-align: center;"><span style="display: inline-block; padding: 5px 15px; border-radius: 5px;
-                    background-color: {'#d4edda' if uv_index <= 2 else '#fcfac0' if uv_index <= 5 else '#ffc78f' if uv_index <= 7 else '#ff8a8a' if uv_index <= 10 else '#e7cafc'};">
-            {"<p style='color: #00ff00;'><strong>✅ Tingkat aman:</strong> Gunakan pelembab tabir surya SPF 30+ dan kacamata hitam.</p>" if uv_index <= 2 else
-             "<p style='color: #ffcc00;'><strong>⚠️ Tingkat bahaya sedang:</strong> Oleskan cairan pelembab tabir surya SPF 30+ setiap 2 jam, kenakan pakaian pelindung matahari.</p>" if uv_index <= 5 else
-             "<p style='color: #ff6600;'><strong>⚠️ Tingkat bahaya tinggi:</strong> Kurangi paparan matahari antara pukul 10 pagi hingga pukul 4 sore.</p>" if uv_index <= 7 else
-             "<p style='color: #ff0000;'><strong>⚠️ Tingkat bahaya sangat tinggi:</strong> Tetap di tempat teduh dan oleskan sunscreen setiap 2 jam.</p>" if uv_index <= 10 else
+                    background-color: {'#d4edda' if last_index <= 2 else '#fcfac0' if last_index <= 5 else '#ffc78f' if last_index <= 7 else '#ff8a8a' if last_index <= 10 else '#e7cafc'};">
+            {"<p style='color: #00ff00;'><strong>✅ Tingkat aman:</strong> Gunakan pelembab tabir surya SPF 30+ dan kacamata hitam.</p>" if last_index <= 2 else
+             "<p style='color: #ffcc00;'><strong>⚠️ Tingkat bahaya sedang:</strong> Oleskan cairan pelembab tabir surya SPF 30+ setiap 2 jam, kenakan pakaian pelindung matahari.</p>" if last_index <= 5 else
+             "<p style='color: #ff6600;'><strong>⚠️ Tingkat bahaya tinggi:</strong> Kurangi paparan matahari antara pukul 10 pagi hingga pukul 4 sore.</p>" if last_index <= 7 else
+             "<p style='color: #ff0000;'><strong>⚠️ Tingkat bahaya sangat tinggi:</strong> Tetap di tempat teduh dan oleskan sunscreen setiap 2 jam.</p>" if last_index <= 10 else
              "<p style='color: #9900cc;'><strong>❗ Tingkat bahaya ekstrem:</strong> Diperlukan semua tindakan pencegahan karena kulit dan mata dapat rusak dalam hitungan menit.</p>"}
        </span>
     </div>
@@ -94,8 +94,6 @@ elif menu == "Indeks UV":
         <p><b>Pukul:</b> {latest_time.strftime('%H:%M')}</p>
     </div>
     """,unsafe_allow_html=True,)
-
-
 
 
 elif menu == "Tabel Proteksi":
@@ -180,26 +178,21 @@ elif menu == "Tabel Proteksi":
 elif menu == "Data Historis":
     if data is not None and not data.empty:
         st.subheader("📊 Data Historis Indeks UV")
-
-        # Membuat dua kolom: kiri (tabel) & kanan (grafik)
-        col1, col2 = st.columns([1, 2])  # Kolom kiri lebih kecil dari kanan
+        col1, col2 = st.columns([1, 2])
 
         with col1:
-            st.write("📋 **Tabel Data (Terbaru di Atas)**")
-            st.dataframe(data.tail(20).iloc[::-1], height=400)  # Menampilkan 20 data terbaru (urutan terbalik)
+            st.write("📋 **Tabel Data**")
+            st.dataframe(data) 
 
         with col2:
             st.write("📈 **Grafik Indeks UV**")
             fig = px.line(
-                data, 
-                x=data.index, 
-                y="Index", 
-                markers=True, 
+                data, x=data.index, y="Index", markers=True, 
                 title="Grafik Indeks UV Seiring Waktu",
                 labels={"Index": "Indeks UV", "index": "Waktu"}
             )
-            fig.update_traces(line=dict(color="purple"), fill="tozeroy")  # Warna & area fill
-            fig.update_layout(xaxis=dict(rangeslider=dict(visible=True)))  # Scroll horizontal
+            fig.update_traces(line=dict(color="purple"), fill="tozeroy") 
+            fig.update_layout(xaxis=dict(rangeslider=dict(visible=True)))
 
             st.plotly_chart(fig, use_container_width=True)  # Grafik responsif
     else:
@@ -210,19 +203,11 @@ st.markdown(
     """
     <style>
     .footer {
-        position: fixed;
-        bottom: 0;
-        right: 70px;
-        font-size: 12px;
-        text-align: left;
-        margin: 0;
-        padding: 5px 10px;
+        position: fixed; bottom: 0; right: 70px; font-size: 12px; text-align: left; margin: 0; padding: 5px 10px;
     }
     </style>
     <div class="footer">
         <p>Universitas Diponegoro<br>Fakultas Sains dan Matematika<br>Departemen Fisika</p>
         <p>Nastangini<br>20440102130112</p>
     </div>
-    """,
-    unsafe_allow_html=True
-)
+    """, unsafe_allow_html=True)
