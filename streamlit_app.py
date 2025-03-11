@@ -36,7 +36,7 @@ st.markdown(
 
 # Navigasi Sidebar
 st.sidebar.title("Navigasi")
-menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Indeks UV", "Tabel Proteksi", "Data Historis"])
+menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Indeks UV", "Data Historis"])
 
 # Tampilan Beranda
 if menu == "Beranda":
