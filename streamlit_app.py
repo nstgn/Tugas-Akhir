@@ -227,6 +227,9 @@ elif menu == "Data Historis":
         selected_columns = ["Date", "Time", "Intensity", "Index"]
         data_filtered = data_asli[selected_columns]
 
+        if "Waktu" not in data_asli.columns:
+        data_asli["Waktu"] = pd.to_datetime(data_asli["Date"] + " " + data_asli["Time"])
+
         col1, col2 = st.columns([2, 2.5]) 
         with col1:
             st.write("📋 **Tabel Data**")
@@ -234,7 +237,7 @@ elif menu == "Data Historis":
             
         with col2:
             st.write("📈 **Grafik Indeks UV**")
-            latest_data = data_asli.tail(100)
+            latest_data = data.tail(100)
             fig = go.Figure()
             fig.add_trace(go.Scatter(x=latest_data["Time"], y=latest_data["Index"],
                                  mode='lines+markers', name='Indeks',
