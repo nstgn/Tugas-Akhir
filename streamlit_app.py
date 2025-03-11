@@ -94,8 +94,8 @@ elif menu == "Indeks UV":
         <p><b>Pukul:</b> {last_time.strftime('%H:%M')}</p>
     </div>
     """,unsafe_allow_html=True,)
-
-st.subheader("⏳ Prediksi Indeks UV")
+    
+    st.subheader("⏳ Prediksi Indeks UV")
 
 elif menu == "Panduan Perlindungan":
     st.subheader("🛡️ Panduan Perlindungan")
