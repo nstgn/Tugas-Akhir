@@ -73,8 +73,8 @@ elif menu == "Indeks UV":
         }
     ))
     fig.update_layout(
-        margin=dict(t=30, b=30, l=30, r=30),
-        height=250, width=400)
+        margin=dict(t=30, b=30, l=30, r=30))
+        #height=250, width=400)
     
     st.plotly_chart(fig, use_container_width=True)
     st.markdown(f"""
@@ -189,11 +189,11 @@ elif menu == "Data Historis":
             st.write("📈 **Grafik Indeks UV**")
             fig = px.line(
                 data, 
-                x="Waktu",  # Gunakan Date sebagai sumbu X untuk visualisasi waktu
+                x="Time",  # Gunakan Date sebagai sumbu X untuk visualisasi waktu
                 y="Index", 
                 markers=True, 
                 title="Grafik Indeks UV Seiring Waktu",
-                labels={"Index": "Indeks UV", "Waktu": "Pukul"}
+                labels={"Index": "Indeks UV", "Time": "Pukul"}
             )
             fig.update_traces(line=dict(color="purple"), fill="tozeroy")  # Warna & area fill
             fig.update_layout(xaxis=dict(rangeslider=dict(visible=True)))  # Scroll horizontal
