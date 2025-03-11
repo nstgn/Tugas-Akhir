@@ -15,7 +15,7 @@ if data is not None and not data.empty:
     data.columns = ["Date", "Time", "Intensity", "Index"]
     data["Waktu"] = pd.to_datetime(data["Date"] + " " + data["Time"])
     data = data.sort_values(by="Waktu")
-    data.set_index('Datetime', inplace=True)
+    data.set_index('Waktu', inplace=True)
     data = data[['Index']].copy()
     last_index = data['Index'].iloc[-1]
     last_time = data.index[-1]
