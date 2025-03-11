@@ -15,10 +15,6 @@ if data is not None and not data.empty:
     data.columns = ["Date", "Time", "Intensity", "Index"]
     data["Waktu"] = pd.to_datetime(data["Date"] + " " + data["Time"])
     data = data.sort_values(by="Waktu")
-#3 Pre-Processing Data
-data['Datetime'] = pd.to_datetime(data['Date'] + ' ' + data['Time'])
-data.set_index('Datetime', inplace=True)
-data = data[['Index']].copy()
 
 data = data.between_time('06:00', '18:05')
 last_real_value = data.iloc[-1]['Index']
