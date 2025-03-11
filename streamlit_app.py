@@ -44,12 +44,16 @@ if menu == "Beranda":
     <h1 style='text-align: center; color: #6a0dad;'>🌞 SISTEM PREDIKSI INDEKS UV</h1>
     """, unsafe_allow_html=True)
     
-    st.write("""
-    Selamat datang❕
-    Sistem ini menggunakan data dari sensor ML8511 untuk memprediksi indeks UV dengan model 
-    Long Short-Term Memory (LSTM). Prediksi ini membantu dalam memahami pola paparan UV serta tindakan pencegahan 
-    yang diperlukan berdasarkan estimasi indeks UV dalam beberapa jam ke depan.
-    """)
+    st.markdown("""
+        <div style="text-align: center;">
+            <h3>Selamat datang❕</h3>
+            <p style="text-align: justify; max-width: 600px; margin: auto;">
+                Sistem ini menggunakan data dari sensor ML8511 untuk memprediksi indeks UV dengan model 
+                Long Short-Term Memory (LSTM). Prediksi ini membantu dalam memahami pola paparan UV serta 
+                tindakan pencegahan yang diperlukan berdasarkan estimasi indeks UV dalam beberapa jam ke depan.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
 elif menu == "Indeks UV":
     last_index = data['Index'].iloc[-1]
@@ -73,10 +77,8 @@ elif menu == "Indeks UV":
         height=250, width=400)
     
     st.plotly_chart(fig, use_container_width=True)
-    st.markdown(
-    f"""
-    <div style="text-align: center;">
-        <span style="display: inline-block; padding: 5px 15px; border-radius: 5px;
+    st.markdown(f"""
+    <div style="text-align: center;"><span style="display: inline-block; padding: 5px 15px; border-radius: 5px;
                     background-color: {'#d4edda' if uv_index <= 2 else '#fcfac0' if uv_index <= 5 else '#ffc78f' if uv_index <= 7 else '#ff8a8a' if uv_index <= 10 else '#e7cafc'};">
             {"<p style='color: #00ff00;'><strong>✅ Tingkat aman:</strong> Gunakan pelembab tabir surya SPF 30+ dan kacamata hitam.</p>" if uv_index <= 2 else
              "<p style='color: #ffcc00;'><strong>⚠️ Tingkat bahaya sedang:</strong> Oleskan cairan pelembab tabir surya SPF 30+ setiap 2 jam, kenakan pakaian pelindung matahari.</p>" if uv_index <= 5 else
@@ -85,26 +87,123 @@ elif menu == "Indeks UV":
              "<p style='color: #9900cc;'><strong>❗ Tingkat bahaya ekstrem:</strong> Diperlukan semua tindakan pencegahan karena kulit dan mata dapat rusak dalam hitungan menit.</p>"}
        </span>
     </div>
-    """,
-    unsafe_allow_html=True,
-)
-    st.markdown(
-    f"""
+    """, unsafe_allow_html=True,)
+    
+    st.markdown(f"""
     <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
         <p><b>Pukul:</b> {latest_time.strftime('%H:%M')}</p>
     </div>
-    """,
-    unsafe_allow_html=True,
-)
+    """,unsafe_allow_html=True,)
 
 
 
 
 elif menu == "Tabel Proteksi":
-    st.write("Tabel Proteksi")
+    st.markdown("""
+    <h1 style="text-align: center;margin-top: 40px; margin-bottom: 10px;">Tabel Saran Proteksi</h1>
+    """,unsafe_allow_html=True,)
+    
+    st.markdown(
+    """
+    <table style="width:100%; border-collapse: collapse; text-align: center;">
+        <tr>
+            <th style="border: 1px solid black; padding: 8px;">Kategori</th>
+            <th style="border: 1px solid black; padding: 8px;">Himbauan</th>
+        </tr>
+        <tr style="background-color: #00ff00;">
+            <td style="border: 1px solid black; padding: 8px; text-align: left;">0-2 (Low)</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left;">
+                <ul>
+                    <li>Tingkat bahaya rendah bagi orang banyak.</li>
+                    <li>Kenakan kacamata hitam pada hari yang cerah.</li>
+                    <li>Gunakan cairan pelembab tabir surya SPF 30+ bagi kulit sensitif.</li>
+                    <li>Permukaan yang cerah, seperti pasir, air, dan salju, akan meningkatkan paparan UV.</li>
+                </ul>
+            </td>
+        </tr>
+        <tr style="background-color: #ffff00;">
+            <td style="border: 1px solid black; padding: 8px; text-align: left;">3-5 (Moderate)</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left;">
+                <ul>
+                    <li>Tingkat bahaya sedang bagi orang yang terpapar matahari tanpa pelindung.</li>
+                    <li>Tetap di tempat teduh pada saat matahari terik siang hari.</li>
+                    <li>Kenakan pakaian pelindung matahari, topi lebar, dan kacamata hitam yang menghalangi sinar UV, pada saat berada di luar ruangan.</li>
+                    <li>Oleskan cairan pelembab tabir surya SPF 30+ setiap 2 jam bahkan pada hari berawan, setelah berenang atau berkeringat.</li>
+                    <li>Permukaan yang cerah, seperti pasir, air, dan salju, akan meningkatkan paparan UV.</li>
+                </ul>
+            </td>
+        </tr>
+        <tr style="background-color: #ff6600;">
+            <td style="border: 1px solid black; padding: 8px; text-align: left;">6-7 (High)</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left;">
+                <ul>
+                    <li>Tingkat bahaya tinggi bagi orang yang terpapar matahari tanpa pelindung, diperlukan pelindung untuk menghindari kerusakan mata dan kulit.</li>
+                    <li>Kurangi waktu di bawah paparan matahari antara pukul 10 pagi hingga pukul 4 sore.</li>
+                    <li>Kenakan pakaian pelindung matahari, topi lebar, dan kacamata hitam yang menghalangi sinar UV, pada saat berada di luar ruangan.</li>
+                    <li>Oleskan cairan pelembab tabir surya SPF 30+ setiap 2 jam bahkan pada hari berawan, setelah berenang atau berkeringat.</li>
+                    <li>Permukaan yang cerah, seperti pasir, air, dan salju, akan meningkatkan paparan UV.</li>
+                </ul>
+            </td>
+        </tr>
+        <tr style="background-color: #ff0000;">
+            <td style="border: 1px solid black; padding: 8px; text-align: left;">8-10 (Very High)</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left;">
+                <ul>
+                    <li>Tingkat bahaya tinggi bagi orang yang terpapar matahari tanpa pelindung, diperlukan pelindung untuk menghindari kerusakan mata dan kulit.</li>
+                    <li>Minimal waktu di bawah paparan matahari antara pukul 10 pagi hingga pukul 4 sore.</li>
+                    <li>Tetap di tempat teduh pada saat matahari terik siang hari.</li>
+                    <li>Kenakan pakaian pelindung matahari, topi lebar, dan kacamata hitam yang menghalangi sinar UV, pada saat berada di luar ruangan.</li>
+                    <li>Oleskan cairan pelembab tabir surya SPF 30+ setiap 2 jam bahkan pada hari berawan, setelah berenang atau berkeringat.</li>
+                    <li>Permukaan yang cerah, seperti pasir, air, dan salju, akan meningkatkan paparan UV.</li>
+                </ul>
+            </td>
+        </tr>
+        <tr style="background-color: #9900cc;">
+            <td style="border: 1px solid black; padding: 8px; text-align: left;">11+ (Extreme)</td>
+            <td style="border: 1px solid black; padding: 8px; text-align: left;">
+                <ul>
+                    <li>Tingkat bahaya ekstrem, diperlukan semua tindakan pencegahan karena kulit dan mata dapat rusak dalam hitungan menit.</li>
+                    <li>Hindari paparan matahari langsung dan pastikan perlindungan maksimal.</li>
+                    <li>Tetap di tempat teduh pada saat matahari terik siang hari.</li>
+                    <li>Kenakan pakaian pelindung matahari, topi lebar, dan kacamata hitam yang menghalangi sinar UV, pada saat berada di luar ruangan.</li>
+                    <li>Oleskan cairan pelembab tabir surya SPF 30+ setiap 2 jam bahkan pada hari berawan, setelah berenang atau berkeringat.</li>
+                    <li>Permukaan yang cerah, seperti pasir, air, dan salju, akan meningkatkan paparan UV.</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+    """,
+    unsafe_allow_html=True,
+)
+
 
 elif menu == "Data Historis":
-    st.write("Halaman Data Historis")
+    if data is not None and not data.empty:
+        st.subheader("📊 Data Historis Indeks UV")
+
+        # Membuat dua kolom: kiri (tabel) & kanan (grafik)
+        col1, col2 = st.columns([1, 2])  # Kolom kiri lebih kecil dari kanan
+
+        with col1:
+            st.write("📋 **Tabel Data (Terbaru di Atas)**")
+            st.dataframe(data.tail(20).iloc[::-1], height=400)  # Menampilkan 20 data terbaru (urutan terbalik)
+
+        with col2:
+            st.write("📈 **Grafik Indeks UV**")
+            fig = px.line(
+                data, 
+                x=data.index, 
+                y="Index", 
+                markers=True, 
+                title="Grafik Indeks UV Seiring Waktu",
+                labels={"Index": "Indeks UV", "index": "Waktu"}
+            )
+            fig.update_traces(line=dict(color="purple"), fill="tozeroy")  # Warna & area fill
+            fig.update_layout(xaxis=dict(rangeslider=dict(visible=True)))  # Scroll horizontal
+
+            st.plotly_chart(fig, use_container_width=True)  # Grafik responsif
+    else:
+        st.warning("⚠️ Data tidak tersedia.")
 
 # Custom Footer
 st.markdown(
