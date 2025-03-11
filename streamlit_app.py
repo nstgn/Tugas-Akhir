@@ -49,6 +49,18 @@ X, y = prepare_data(data['Index_scaled'].values, n_steps)
 split = int(len(X) * 0.8)
 X_train, X_test = X[:split], X[split:]
 y_train, y_test = y[:split], y[split:]
+X_train = X_train.reshape((X_train.shape[0], X_train.shape[1], 1))
+X_test = X_test.reshape((X_test.shape[0], X_test.shape[1], 1))
+
+#7 Bangun LSTM
+model = Sequential([
+    LSTM(50, activation='relu', input_shape=(n_steps, 1), return_sequences=True),
+    Dropout(0.2),
+    LSTM(50, activation='relu'),
+    Dense(1)
+])
+
+
 
 # Custom Header
 st.markdown(
