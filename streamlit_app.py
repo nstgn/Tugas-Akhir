@@ -91,7 +91,7 @@ elif menu == "Indeks UV":
     
     st.markdown(f"""
     <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
-        <p><b>Pukul:</b> {latest_time.strftime('%H:%M')}</p>
+        <p><b>Pukul:</b> {last_time.strftime('%H:%M')}</p>
     </div>
     """,unsafe_allow_html=True,)
 
@@ -178,26 +178,34 @@ elif menu == "Tabel Proteksi":
 elif menu == "Data Historis":
     if data is not None and not data.empty:
         st.subheader("📊 Data Historis Indeks UV")
-        col1, col2 = st.columns([1, 2])
+
+        # Memilih hanya kolom yang diperlukan
+        selected_columns = ["Date", "Time", "Index", "Intensity"]
+        data_filtered = data[selected_columns]  # Hanya menyimpan kolom yang diperlukan
+
+        # Membuat dua kolom: kiri (tabel) & kanan (grafik)
+        col1, col2 = st.columns([1, 2])  # Kolom kiri lebih kecil dari kanan
 
         with col1:
-            st.write("📋 **Tabel Data**")
-            st.dataframe(data) 
+            st.write("📋 **Tabel Data (Terbaru di Atas)**")
+            st.dataframe(data_filtered.tail(20).iloc[::-1], height=400)  # Urutan terbaru di atas
 
         with col2:
             st.write("📈 **Grafik Indeks UV**")
             fig = px.line(
-                data, x=data.index, y="Index", markers=True, 
+                data, 
+                x="Date",  # Gunakan Date sebagai sumbu X untuk visualisasi waktu
+                y="Index", 
+                markers=True, 
                 title="Grafik Indeks UV Seiring Waktu",
-                labels={"Index": "Indeks UV", "index": "Waktu"}
+                labels={"Index": "Indeks UV", "Date": "Tanggal"}
             )
-            fig.update_traces(line=dict(color="purple"), fill="tozeroy") 
-            fig.update_layout(xaxis=dict(rangeslider=dict(visible=True)))
+            fig.update_traces(line=dict(color="purple"), fill="tozeroy")  # Warna & area fill
+            fig.update_layout(xaxis=dict(rangeslider=dict(visible=True)))  # Scroll horizontal
 
             st.plotly_chart(fig, use_container_width=True)  # Grafik responsif
     else:
         st.warning("⚠️ Data tidak tersedia.")
-
 # Custom Footer
 st.markdown(
     """
