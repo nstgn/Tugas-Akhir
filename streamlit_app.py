@@ -40,10 +40,64 @@ menu = st.sidebar.radio("Pilih Menu", ["Beranda", "Indeks UV", "abel Proteksi", 
 
 # Tampilan Beranda
 if menu == "Beranda":
-    st.write("Selamat datang di halaman Beranda!")
+    st.markdown(""" 
+    <h1 style='text-align: center; color: #6a0dad;'>🌞 SISTEM PREDIKSI INDEKS UV</h1>
+    """, unsafe_allow_html=True)
+    
+    st.write("""
+    Selamat datang❕
+    Sistem ini menggunakan data dari sensor ML8511 untuk memprediksi indeks UV dengan model 
+    Long Short-Term Memory (LSTM). Prediksi ini membantu dalam memahami pola paparan UV serta tindakan pencegahan 
+    yang diperlukan berdasarkan estimasi indeks UV dalam beberapa jam ke depan.
+    """)
 
 elif menu == "Indeks UV":
-    st.write("Halaman Indeks UV")
+    last_index = data['Index'].iloc[-1]
+    last_time = data['Waktu'].iloc[-1].time()
+        
+        fig = go.Figure(go.Indicator(
+            mode="gauge+number", value=last_index, gauge={
+                'axis': {'range': [0, 11]},
+                'bar': {'color': "#3098ff"},
+                'steps': [
+                    {'range': [0, 3], 'color': "#00ff00"},
+                    {'range': [3, 6], 'color': "#ffff00"},
+                    {'range': [6, 8], 'color': "#ff6600"},
+                    {'range': [8, 10], 'color': "#ff0000"},
+                    {'range': [10, 11], 'color': "#9900cc"},
+                ]
+            }
+        ))
+
+        fig.update_layout(
+            margin=dict(t=30, b=30, l=30, r=30)
+            height=250, width=400,)
+        st.plotly_chart(fig, use_container_width=True)
+
+        st.markdown(
+            f"""
+            <div style="text-align: center;">
+                <span style="display: inline-block; padding: 5px 15px; border-radius: 5px;
+                            background-color: {'#d4edda' if last_index <= 2 else '#fcfac0' if last_index <= 5 else '#ffc78f' if last_index <= 7 else '#ff8a8a' if last_index <= 10 else '#e7cafc'};">
+                    {"✅ Tingkat aman: Gunakan sunscreen SPF 30+." if last_index <= 2 else
+                     "⚠️ Bahaya sedang: Oleskan sunscreen setiap 2 jam, kenakan pakaian pelindung matahari." if last_index <= 5 else
+                     "⚠️ Bahaya tinggi: Hindari paparan langsung saat siang." if last_index <= 7 else
+                     "⚠️ Bahaya sangat tinggi:Tetap di tempat teduh, gunakan pakaian pelindung & topi." if last_index <= 10 else
+                     "❗ Bahaya ekstrem: Kurangi aktivitas luar ruangan!"}
+               </span>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        st.markdown(
+            f"""
+            <div style="text-align: center; font-size: medium; margin-top: 10px; margin-bottom: 40px;">
+                <p><b>Pukul:</b> {last_time.strftime('%H:%M')}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
 elif menu == "Tabel Proteksi":
     st.write("Tabel Proteksi")
