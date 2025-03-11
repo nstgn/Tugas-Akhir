@@ -12,22 +12,22 @@ data = conn.read(spreadsheet=url, usecols=[0, 1, 2, 3], ttl=0)
 
 # 2 Pre-Processing
 if data is not None and not data.empty:
-    
     data.columns = ["Date", "Time", "Intensity", "Index"]
     data["Waktu"] = pd.to_datetime(data["Date"] + " " + data["Time"])
     data = data.sort_values(by="Waktu")
-
     data_asli = data.copy()
     data.set_index("Waktu", inplace=True)
-
-    
     last_index = data['Index'].iloc[-1]
     last_time = data.index[-1]
-    
+    data = data[['Index']].copy()
     data = data.between_time('06:00', '18:05')
     date_range = pd.date_range(start=data.index.min(), end=data.index.max(), freq='2min')
     data = data.reindex(date_range)
     data['Index'].interpolate(method='linear', inplace=True)
+
+#4 Normalisasi Data
+scaler = MinMaxScaler(feature_range=(0, 1))
+data ['Index_scaled'] = scaler.fit_transform(data[['Index']])
 
 # Custom Header
 st.markdown(
