@@ -195,8 +195,7 @@ elif menu == "Data Historis":
             fig.update_layout(xaxis_title='Waktu',
                           yaxis_title='Indeks UV',
                           xaxis=dict(rangeslider=dict(visible=True)),
-                          height=500,
-                          margin=dict(t=30, b=20)))
+                          height=500)
             st.plotly_chart(fig, use_container_width=True)
     else: st.warning("⚠️ Data tidak tersedia.")
 
