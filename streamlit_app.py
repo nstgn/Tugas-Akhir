@@ -180,6 +180,9 @@ elif menu == "Indeks UV":
     """,unsafe_allow_html=True,)
     
     st.subheader("⏳ Prediksi Indeks UV")
+    st.write("Data Future Results:")
+    st.write(future_results)
+
     cols = st.columns(len(future_results))
     for i, row in future_results.iterrows():
         with cols[i]:
