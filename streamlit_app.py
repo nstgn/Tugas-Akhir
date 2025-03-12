@@ -77,22 +77,26 @@ y_train_dnm = scaler.inverse_transform(y_train.reshape(-1, 1))
 y_test_dnm = scaler.inverse_transform(y_test.reshape(-1, 1))
 
 #12 Prediksi Masa Depan
-future_steps = 10  # Tentukan jumlah langkah ke depan yang ingin diprediksi
+future_steps = 150  # Tentukan jumlah langkah ke depan yang ingin diprediksi
 future_input = X_test[-1].reshape(1, n_steps, 1)
 future_predictions = []
-future_timestamps = [last_time + pd.Timedelta(minutes=30 * (i + 1)) for i in range(future_steps)]
+future_timestamps = [last_time + pd.Timedelta(minutes=2 * (i + 1)) for i in range(future_steps)]
 
 for _ in range(future_steps):
     future_pred = model.predict(future_input, verbose=0)
     future_predictions.append(future_pred[0, 0])
     future_input = np.roll(future_input, -1, axis=1)
     future_input[0, -1, 0] = future_pred[0, 0]
-
-# Denormalisasi hasil prediksi masa depan
-future_predictions_dnm = np.round (scaler.inverse_transform(np.array(future_predictions).reshape(-1, 1))).astype(int)
-
-# Tampilkan hasil prediksi masa depan dengan waktu
-future_results = pd.DataFrame({'Datetime': future_timestamps, 'Predicted_Index': future_predictions_dnm.flatten()})
+    
+    future_predictions_dnm = np.round (scaler.inverse_transform(np.array(future_predictions).reshape(-1, 1))).astype(int)
+    future_results = pd.DataFrame({'Datetime': future_timestamps, 'Predicted_Index': future_predictions_dnm.flatten()})
+    
+    start_time = last_time + pd.Timedelta(hours=1)
+    target_times = [start_time + pd.Timedelta(hours=i) for i in range(5)]
+    selected_rows = [
+        future_results.loc[(future_results['Datetime'] - target_time).abs().idxmin()]
+        for target_time in target_times]
+    filtered_results_1hour = pd.DataFrame(selected_rows)
 
 # Custom Header
 st.markdown(
