@@ -181,7 +181,7 @@ elif menu == "Indeks UV":
     
     st.subheader("⏳ Prediksi Indeks UV")
     cols = st.columns(len(future_results))
-    for i, row in future_results.iterrows():
+    for i, (index, row) in enumerate(future_results.iterrows()):
         with cols[i]:
             uv_level = row["Predicted_Index"]
             if uv_level < 3:
