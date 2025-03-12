@@ -180,11 +180,8 @@ elif menu == "Indeks UV":
     """,unsafe_allow_html=True,)
     
     st.subheader("⏳ Prediksi Indeks UV")
-    future.df = pd.DataFrame({'values': [1,2,3,4,5,6,7,8,9,10]})
-    #cols = st.columns(len(future_results))
-    #for i, row in future_results.iterrows():
-    cols = st.columns(len(future.df))
-    for i, row in future.df.iterrows():
+    cols = st.columns(len(future_results))
+    for i, row in future_results.iterrows():
         with cols[i]:
             uv_level = row["Predicted_Index"]
             if uv_level < 3:
