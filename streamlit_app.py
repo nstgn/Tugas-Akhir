@@ -184,41 +184,7 @@ elif menu == "Indeks UV":
     """,unsafe_allow_html=True,)
     
     st.subheader("⏳ Prediksi Indeks UV")
-    cols = st.columns(len(future_results))
-    for i, row in future_results.iterrows():
-        with cols[i]:
-            uv_level = row["Predicted_Index"]
-            if uv_level < 3:
-                icon = "🟢"
-                desc = "Low"
-                bg_color = "#00ff00"
-            elif uv_level < 6:
-                icon = "🟡"
-                desc = "Moderate"
-                bg_color = "#ffe600"
-            elif uv_level < 8:
-                icon = "🟠"
-                desc = "High"
-                bg_color = "#ff8c00"
-            elif uv_level < 11:
-                icon = "🔴"
-                desc = "Very High"
-                bg_color = "#ff0000"
-            else:
-                icon = "🟣"
-                desc = "Extreme"
-                bg_color = "#9900cc"
-
-        st.markdown(
-            f"""
-            <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
-                <h3 style="color:white;">{row['Datetime'].strftime('%H:%M')}</h3>
-                <h2 style="color:white;">{icon} {uv_level}</h2>
-                <p style="color:white;">{desc}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+    
 
 elif menu == "Panduan Perlindungan":
     st.subheader("🛡️ Panduan Perlindungan")
