@@ -81,7 +81,6 @@ future_steps = 150  # Tentukan jumlah langkah ke depan yang ingin diprediksi
 future_input = X_test[-1].reshape(1, n_steps, 1)
 future_predictions = []
 future_timestamps = [last_time + pd.Timedelta(minutes=2 * (i + 1)) for i in range(future_steps)]
-
 for _ in range(future_steps):
     future_pred = model.predict(future_input, verbose=0)
     future_predictions.append(future_pred[0, 0])
