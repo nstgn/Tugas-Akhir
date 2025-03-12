@@ -77,25 +77,38 @@ y_train_dnm = scaler.inverse_transform(y_train.reshape(-1, 1))
 y_test_dnm = scaler.inverse_transform(y_test.reshape(-1, 1))
 
 #12 Prediksi Masa Depan
+#12 Prediksi Masa Depan
 future_steps = 150  # Tentukan jumlah langkah ke depan yang ingin diprediksi
 future_input = X_test[-1].reshape(1, n_steps, 1)
 future_predictions = []
 future_timestamps = [last_time + pd.Timedelta(minutes=2 * (i + 1)) for i in range(future_steps)]
+
 for _ in range(future_steps):
     future_pred = model.predict(future_input, verbose=0)
     future_predictions.append(future_pred[0, 0])
     future_input = np.roll(future_input, -1, axis=1)
     future_input[0, -1, 0] = future_pred[0, 0]
-    
-    future_predictions_dnm = np.round (scaler.inverse_transform(np.array(future_predictions).reshape(-1, 1))).astype(int)
-    future_results = pd.DataFrame({'Datetime': future_timestamps, 'Predicted_Index': future_predictions_dnm.flatten()})
-    
-    start_time = last_time + pd.Timedelta(hours=1)
-    target_times = [start_time + pd.Timedelta(hours=i) for i in range(5)]
-    selected_rows = [
-        future_results.loc[(future_results['Datetime'] - target_time).abs().idxmin()]
-        for target_time in target_times]
-    filtered_results_1hour = pd.DataFrame(selected_rows)
+
+# Denormalisasi hasil prediksi masa depan
+future_predictions_dnm = np.round (scaler.inverse_transform(np.array(future_predictions).reshape(-1, 1))).astype(int)
+
+# Tampilkan hasil prediksi masa depan dengan waktu
+future_results = pd.DataFrame({'Datetime': future_timestamps, 'Predicted_Index': future_predictions_dnm.flatten()})
+
+# Mulai dari 1 jam setelah last_time
+start_time = last_time + pd.Timedelta(hours=1)
+
+# Tentukan 5 titik waktu (setiap 1 jam)
+target_times = [start_time + pd.Timedelta(hours=i) for i in range(5)]
+
+# Cari data prediksi yang paling dekat dengan target waktu
+selected_rows = []
+for target_time in target_times:
+    closest_index = (future_results['Datetime'] - target_time).abs().idxmin()
+    selected_rows.append(future_results.loc[closest_index])
+
+# Buat DataFrame hasilnya
+filtered_results_1hour = pd.DataFrame(selected_rows)
 
 # Custom Header
 st.markdown(
@@ -183,6 +196,33 @@ elif menu == "Indeks UV":
     """,unsafe_allow_html=True,)
     
     st.subheader("⏳ Prediksi Indeks UV")
+    def get_uv_category(uv_level):
+    if uv_level < 3:
+        return "🟢", "Low", "#00ff00"
+    elif uv_level < 6:
+        return "🟡", "Moderate", "#ffe600"
+    elif uv_level < 8:
+        return "🟠", "High", "#ff8c00"
+    elif uv_level < 11:
+        return "🔴", "Very High", "#ff0000"
+    else:
+        return "🟣", "Extreme", "#9900cc"
+
+cols = st.columns(5)
+
+for i, (index, row) in enumerate(filtered_results_1hour.iterrows()):
+    icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
+    with cols[i]:
+        st.markdown(
+            f"""
+            <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
+                <h3 style="color:white;">{row['Datetime'].strftime('%H:%M')}</h3>
+                <h2 style="color:white;">{icon} {row['Predicted_Index']}</h2>
+                <p style="color:white;">{desc}</p>
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
     
 
 elif menu == "Panduan Perlindungan":
