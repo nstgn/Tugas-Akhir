@@ -197,34 +197,30 @@ elif menu == "Indeks UV":
     
     st.subheader("⏳ Prediksi Indeks UV")
     def get_uv_category(uv_level):
-    if uv_level < 3:
-        return "🟢", "Low", "#00ff00"
-    elif uv_level < 6:
-        return "🟡", "Moderate", "#ffe600"
-    elif uv_level < 8:
-        return "🟠", "High", "#ff8c00"
-    elif uv_level < 11:
-        return "🔴", "Very High", "#ff0000"
-    else:
-        return "🟣", "Extreme", "#9900cc"
-
-cols = st.columns(5)
-
-for i, (index, row) in enumerate(filtered_results_1hour.iterrows()):
-    icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
-    with cols[i]:
-        st.markdown(
-            f"""
-            <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
+        if uv_level < 3:
+            return "🟢", "Low", "#00ff00"
+        elif uv_level < 6:
+            return "🟡", "Moderate", "#ffe600"
+        elif uv_level < 8:
+            return "🟠", "High", "#ff8c00"
+        elif uv_level < 11:
+            return "🔴", "Very High", "#ff0000"
+        else:
+            return "🟣", "Extreme", "#9900cc"
+            
+    cols = st.columns(5)
+    for i, (index, row) in enumerate(filtered_results_1hour.iterrows()):
+        icon, desc, bg_color = get_uv_category(row["Predicted_Index"])
+        with cols[i]:
+            st.markdown(
+                f"""
+                <div style="text-align:center; padding:10px; border-radius:5px; background-color:{bg_color};">
                 <h3 style="color:white;">{row['Datetime'].strftime('%H:%M')}</h3>
                 <h2 style="color:white;">{icon} {row['Predicted_Index']}</h2>
                 <p style="color:white;">{desc}</p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+                </div>
+                """,unsafe_allow_html=True,)
     
-
 elif menu == "Panduan Perlindungan":
     st.subheader("🛡️ Panduan Perlindungan")
     st.markdown("""
