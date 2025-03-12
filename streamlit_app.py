@@ -180,7 +180,7 @@ elif menu == "Indeks UV":
     """,unsafe_allow_html=True,)
     
     st.subheader("⏳ Prediksi Indeks UV")
-    future.df = (1,2,3,4,5,6,7,8,9,10)
+    future.df = pd.DataFrame({'values': [1,2,3,4,5,6,7,8,9,10]})
     #cols = st.columns(len(future_results))
     #for i, row in future_results.iterrows():
     cols = st.columns(len())
